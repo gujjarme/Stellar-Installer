@@ -6,7 +6,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.81" prefWidth="945.48" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1"  fx:controller="com.vaf.stellar.installationSteps.HelloController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.81" prefWidth="945.48" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1"  fx:controller="com.vaf.stellar.installationSteps.GetStartedController">
     <children>
         <!-- Background Images -->
         <ImageView fitHeight="589.0" fitWidth="404.0" layoutX="581.0" layoutY="-2.0" pickOnBounds="true" preserveRatio="true">
