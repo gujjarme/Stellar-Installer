@@ -16,6 +16,8 @@ public class GetStarted extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(GetStarted.class.getResource("/com/vaf/stellar/views/get-started.fxml"));
         GetStarted.globalScene = new Scene(fxmlLoader.load(), 945.48, 590.81);
         stage.setTitle("Stellar Installer");
+        //stage.setFullScreen(Boolean.FALSE);
+        stage.setResizable(Boolean.FALSE);
         stage.setScene(GetStarted.globalScene);
         stage.show();
     }

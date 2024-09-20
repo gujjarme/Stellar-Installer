@@ -1,35 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.81" prefWidth="945.48" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1"  fx:controller="com.vaf.stellar.installationSteps.GetStartedController">
-    <children>
-        <!-- Background Images -->
-        <ImageView fitHeight="589.0" fitWidth="404.0" layoutX="581.0" layoutY="-2.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@../assets/Bg.jpg" />
-            </image>
-        </ImageView>
-        <ImageView fitHeight="351.0" fitWidth="365.0" layoutX="581.0" layoutY="107.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@../assets/Eva.png" />
-            </image>
-        </ImageView>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.81" prefWidth="945.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.vaf.stellar.installationSteps.GetStartedController">
+<children>
+    <!-- Background Image -->
+    <ImageView fitHeight="589.0" fitWidth="404.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0">
+        <image>
+            <Image url="@../assets/Bg.jpg" />
+        </image>
+    </ImageView>
 
-        <!-- Main Label -->
-        <Label layoutX="150.0" layoutY="200.0" style="-fx-font-family: 'Manrope';                                                                  -fx-font-size: 32px;                                                                  -fx-font-weight: 500;                                                                  -fx-text-fill: white;                                                                  -fx-text-alignment: center;" text="Welcome to Stellar!" />
+    <!-- Robot Image -->
+    <ImageView fitHeight="0.0" fitWidth="0.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="107.0" AnchorPane.bottomAnchor="50.0">
+        <image>
+            <Image url="@../assets/Eva-4.png" />
+        </image>
+    </ImageView>
 
-        <!-- First part of the text -->
-        <Label layoutX="150.0" layoutY="240.0" style="-fx-font-family: 'Inter';                       -fx-font-size: 12px;                       -fx-font-weight: 400;                       -fx-text-fill: white;                       -fx-text-alignment: left;" text="Follow the steps to setup the best all-in-one QA" />
+    <!-- Main Label -->
+    <Label layoutX="147.0" layoutY="201.0" style="-fx-font-family: 'Manrope'; -fx-font-size: 32px; -fx-font-weight: 500; -fx-text-fill: white; -fx-text-alignment: center;" text="Welcome to Stellar!" AnchorPane.leftAnchor="147.0" AnchorPane.topAnchor="201.0" />
 
-        <!-- Second part of the text on the next line -->
-        <Label layoutX="150.0" layoutY="255.0" style="-fx-font-family: 'Inter';                       -fx-font-size: 12px;                       -fx-font-weight: 400;                       -fx-text-fill: white;                       -fx-text-alignment: left;" text="automation tool." />
+    <!-- First part of the text -->
+    <Label layoutX="158.0" layoutY="239.0" style="-fx-font-family: 'Inter'; -fx-font-size: 12px; -fx-font-weight: 400; -fx-text-fill: white; -fx-text-alignment: left;" text="Follow the steps to setup the best all-in-one QA" AnchorPane.leftAnchor="158.0" AnchorPane.topAnchor="239.0" />
 
-        <!-- Button moved slightly to the right -->
-        <Button fx:id="getStartedButton" layoutX="200.0" layoutY="300.0" style="-fx-font-family: 'Inter';                        -fx-background-color: #00FFF0;                        -fx-text-fill: black;                        -fx-font-size: 9.85px;                        -fx-font-weight: 400;                        -fx-cursor: hand;                        -fx-pref-width: 81.26px;   /* Button width */                        -fx-pref-height: 25.13px;   /* Button height */                        -fx-padding: 6.56px 13.13px;  /* Button padding */                        -fx-background-radius: 0;                        -fx-opacity: 1;" text="Get Started"   onAction="#onGetStartedButtonClick"  />
-    </children>
+    <!-- Second part of the text on the next line -->
+    <Label layoutX="241.0" layoutY="257.0" style="-fx-font-family: 'Inter'; -fx-font-size: 12px; -fx-font-weight: 400; -fx-text-fill: white; -fx-text-alignment: left;" text="automation tool." AnchorPane.leftAnchor="241.0" AnchorPane.topAnchor="257.0" />
+
+    <!-- Button with responsive position -->
+    <Button fx:id="getStartedButton" layoutX="244.0" layoutY="295.0" onAction="#onGetStartedButtonClick" style="-fx-font-family: 'Inter'; -fx-background-color: #00FFF0; -fx-text-fill: black; -fx-font-size: 9.85px; -fx-font-weight: 400; -fx-cursor: hand; -fx-pref-width: 81.26px; -fx-pref-height: 25.13px; -fx-padding: 6.56px 13.13px; -fx-background-radius: 0; -fx-opacity: 1;" text="Get Started" AnchorPane.leftAnchor="244.0" AnchorPane.topAnchor="295.0" />
+</children>
 </AnchorPane>
