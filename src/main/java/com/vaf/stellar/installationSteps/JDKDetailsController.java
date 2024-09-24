@@ -53,55 +53,10 @@ public class JDKDetailsController {
         webView.setVisible(Boolean.TRUE);
         infoImageView.setVisible(Boolean.FALSE);
         WebEngine webEngine = webView.getEngine();
-        webEngine.setJavaScriptEnabled(true);
+        //webEngine.setJavaScriptEnabled(true);
 
         webEngine.load(videoUrl);
 
-        webEngine.documentProperty().addListener((observable, oldDoc, newDoc) -> {
-            if (newDoc != null) {
-                webEngine.executeScript(
-                        "document.addEventListener('DOMContentLoaded', function() {" +
-                                "   var targetElement = document.getElementById('" + containerId + "');" +
-                                "   if (targetElement) {" +
-                                "       // Remove all other elements from the body and set styles" +
-                                "       var body = document.body;" +
-                                "       while (body.firstChild) {" +
-                                "           body.removeChild(body.firstChild);" +
-                                "       }" +
-                                "       body.appendChild(targetElement); " +
-                                "       body.style.display = 'flex'; " +
-                                "       body.style.justifyContent = 'center'; " +
-                                "       body.style.alignItems = 'center'; " +
-                                "       body.style.height = '100vh'; " +
-                                "       body.style.margin = '0'; " +
-                                "       body.style.overflow = 'hidden'; " +
-                                "   }" +
-                                "});"
-                );
-
-
-            }
-        });
-//        webEngine.documentProperty().addListener((observable, oldValue, newValue) -> {
-//            if (newValue != null) {
-//                webEngine.executeScript(
-//                        "document.getElementById('movie_player').style.margin = 'auto';" +
-//                                "document.getElementById('movie_player').style.position = 'absolute';" +
-//                                "document.getElementById('movie_player').style.left = '50%';" +
-//                                "document.getElementById('movie_player').style.top = '50%';" +
-//                                "document.getElementById('movie_player').style.transform = 'translate(-50%, -50%)';"
-//                );
-//            }
-//        });
-
-        //WebViewWindowController controller = loader.getController();
-        // controller.loadUrl("https://www.youtube.com/watch?v=buECPGQlvV0");
-
-        // Create and configure the WebView window
-//            Stage stage = new Stage();
-//            stage.setTitle("WebView Window");
-//            stage.setScene(new Scene(root, 800, 600)); // Set window size
-//            stage.show();
 
     }
     private void goToPreviousScreen() {
