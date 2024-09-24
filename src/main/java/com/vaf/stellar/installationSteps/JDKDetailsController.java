@@ -34,13 +34,15 @@ public class JDKDetailsController {
 
     @FXML
     private Button continueButton;
+    @FXML
+    private ImageView arrowImageView;
 
 
     @FXML
     public void initialize() {
         // Handle ImageView click to open the WebView window
         infoImageView.setOnMouseClicked(event -> openWebViewWindow());
-
+        arrowImageView.setOnMouseClicked(event -> goToPreviousScreen());
         // Handle Hyperlink click to open the JDK download page
         downloadJDKLink.setOnAction(event -> openJDKDownloadPage());
     }
@@ -101,6 +103,17 @@ public class JDKDetailsController {
 //            stage.setScene(new Scene(root, 800, 600)); // Set window size
 //            stage.show();
 
+    }
+    private void goToPreviousScreen() {
+        try {
+            // Load the get-started.fxml file
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/vaf/stellar/views/get-started.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+            Stage stage = (Stage) arrowImageView.getScene().getWindow();
+            stage.setScene(scene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void openJDKDownloadPage() {

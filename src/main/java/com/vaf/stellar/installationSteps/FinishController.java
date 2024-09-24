@@ -18,13 +18,11 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public class IntellijController {
+public class FinishController {
 
     @FXML
     private ImageView infoImageView;
 
-    @FXML
-    private Hyperlink downloadJDKLink;
 
     @FXML
     private WebView webView;
@@ -42,10 +40,10 @@ public class IntellijController {
 
     @FXML
     public void initialize() {
-
+        // Handle ImageView click to open the WebView window
         infoImageView.setOnMouseClicked(event -> openWebViewWindow());
         arrowImageView.setOnMouseClicked(event -> goToPreviousScreen());
-        downloadJDKLink.setOnAction(event -> openJDKDownloadPage());
+
     }
 
     private void openWebViewWindow() {
@@ -64,8 +62,8 @@ public class IntellijController {
 
     private void goToPreviousScreen() {
         try {
-
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/vaf/stellar/views/maven-installation.fxml"));
+            // Load the get-started.fxml file
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/vaf/stellar/views/stellar-download-info.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
             Stage stage = (Stage) arrowImageView.getScene().getWindow();
             stage.setScene(scene);
@@ -74,28 +72,7 @@ public class IntellijController {
         }
     }
 
-    private void openJDKDownloadPage() {
-        try {
 
-            String url = "https://maven.apache.org/guides/getting-started/windows-prerequisites.html";
-            if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-                Desktop.getDesktop().browse(new URI(url));
-            }
-        } catch (IOException | URISyntaxException e) {
-            e.printStackTrace();
-        }
-    }
 
-    @FXML
-    private void openStellarInstallationScreen() {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/vaf/stellar/views/stellar.fxml"));
-            Scene scene = new Scene(fxmlLoader.load());
-            Stage stage = (Stage) continueButton.getScene().getWindow();
-            stage.setScene(scene);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
 }

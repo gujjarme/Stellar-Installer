@@ -8,30 +8,21 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 <?import javafx.scene.web.WebView?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.81" prefWidth="945.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.vaf.stellar.installationSteps.JDKDetailsController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.81" prefWidth="945.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.vaf.stellar.installationSteps.MavenController">
     <children>
-        <!-- Step Indicator Label -->
-        <Label layoutX="64.0" layoutY="20.0" style="-fx-text-fill: white; -fx-font-size: 18px;" text="Step 1 of 5" />
-
-        <!-- Box for JDK Installation Info -->
-        <AnchorPane layoutX="73.0" layoutY="100.0" prefHeight="402.0" prefWidth="391.0" style="-fx-background-color: #1E1E1E; -fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-radius: 10;">
+        <Label layoutX="107.0" layoutY="35.0" style="-fx-text-fill: white; -fx-font-size: 18px;" text="Step 2 of 5" />
+        <AnchorPane layoutX="73.0" layoutY="100.0" prefHeight="348.0" prefWidth="391.0" style="-fx-background-color: #1E1E1E; -fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-radius: 10;">
             <children>
-                <Label layoutX="106.0" layoutY="185.0" style="-fx-text-fill: white; -fx-font-size: 22px; -fx-wrap-text: true; -fx-font-weight: 500; -fx-font-family: 'Inter';" text="Maven Installation" />
+                <Label layoutX="108.0" layoutY="174.0" style="-fx-text-fill: white; -fx-font-size: 22px; -fx-wrap-text: true; -fx-font-weight: 500; -fx-font-family: 'Inter';" text="Maven Installation" />
 
-                <!-- Continue Button -->
-                <Button fx:id="continueButton" layoutX="103.0" layoutY="322.0" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #00FFF0; -fx-text-fill: black;" text="Continue" />
+                <Button fx:id="continueButton" layoutX="140.0" layoutY="287.0" onAction="#openIntellijInstallationScreen" prefHeight="25.0" prefWidth="68.0" style="-fx-background-color: #00FFF0; -fx-text-fill: black; -fx-background-radius: 0;" text="Continue" />
 
-                <Label layoutX="63.0" layoutY="227.0" prefHeight="18.0" prefWidth="327.0" style="-fx-text-fill: white; -fx-font-weight: 400; -fx-font-size: 12;" text="If Maven is already installed in your system, please " />
-                <Label layoutX="68.0" layoutY="245.0" prefHeight="18.0" prefWidth="258.0" style="-fx-text-fill: white;" text="continue; otherwise, install the latest maven" />
-                <Label layoutX="77.0" layoutY="263.0" prefHeight="18.0" prefWidth="258.0" style="-fx-text-fill: white;" text="version and follow the steps in the video." />
-
-                <!-- Hyperlink for Download JDK -->
-                <Hyperlink fx:id="downloadJDKLink" layoutX="128.0" layoutY="288.0" style="-fx-text-fill: cyan; -fx-font-size: 14px; -fx-underline: true;" text="Download Maven" />
-
-                <!-- Image for clicking -->
-
+                <Label layoutX="63.0" layoutY="206.0" prefHeight="18.0" prefWidth="327.0" style="-fx-text-fill: white; -fx-font-weight: 400; -fx-font-size: 12;" text="If Maven is already installed in your system, please " />
+                <Label layoutX="77.0" layoutY="224.0" prefHeight="18.0" prefWidth="258.0" style="-fx-text-fill: white;" text="continue; otherwise, install the latest maven" />
+                <Label layoutX="89.0" layoutY="242.0" prefHeight="18.0" prefWidth="258.0" style="-fx-text-fill: white;" text="version and follow the steps in the video." />
+                <Hyperlink fx:id="downloadJDKLink" layoutX="123.0" layoutY="251.0" style="-fx-text-fill: cyan; -fx-font-size: 14px; -fx-underline: true;" text="Download Maven" />
                 <AnchorPane fx:id="webViewContainer" prefHeight="121.0" prefWidth="292.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
-                    <ImageView fx:id="infoImageView" fitHeight="121.0" fitWidth="292.0" layoutX="56.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true">
+                    <ImageView fx:id="infoImageView" fitHeight="121.0" fitWidth="292.0" layoutX="56.0" layoutY="34.0" pickOnBounds="true" preserveRatio="true">
                         <image>
                             <Image url="@../assets/info.png" />
                         </image>
@@ -45,16 +36,19 @@
 
         <!-- Pane for embedding the media player (WebView) -->
         <AnchorPane fx:id="mediaPane" layoutX="500.0" layoutY="50.0" prefHeight="400.0" prefWidth="400.0" style="-fx-background-color: black;" />
-
         <ImageView fitHeight="589.0" fitWidth="404.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <image>
-                <Image url="@../assets/BG1.png" />
+                <Image url="@../assets/bg3.png" />
             </image>
         </ImageView>
-
-        <ImageView fitHeight="0.0" fitWidth="0.0" layoutX="500.0" layoutY="129.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="148.80999999999995" AnchorPane.rightAnchor="118.0" AnchorPane.topAnchor="129.0">
+        <ImageView fitHeight="0.0" fitWidth="0.0" layoutX="555.0" layoutY="127.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="140.80999999999995" AnchorPane.rightAnchor="68.0" AnchorPane.topAnchor="127.0">
             <image>
-                <Image url="@../assets/EvaSide.png" />
+                <Image url="@../assets/Eva3.png" />
+            </image>
+        </ImageView>
+        <ImageView fx:id="arrowImageView" fitHeight="26.0" fitWidth="22.0" layoutX="73.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../assets/arrow.png" />
             </image>
         </ImageView>
     </children>

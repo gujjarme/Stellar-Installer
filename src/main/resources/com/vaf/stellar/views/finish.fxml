@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<?import javafx.scene.web.WebView?>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.81" prefWidth="945.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.vaf.stellar.installationSteps.FinishController">
+    <children>
+        <Label layoutX="107.0" layoutY="35.0" style="-fx-text-fill: white; -fx-font-size: 18px;" text="Step 5 of 5" />
+        <AnchorPane layoutX="62.0" layoutY="115.0" prefHeight="318.0" prefWidth="437.0" style="-fx-background-color: #1E1E1E; -fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-radius: 10;">
+            <children>
+                <Label layoutX="132.0" layoutY="169.0" style="-fx-text-fill: white; -fx-font-size: 22px; -fx-wrap-text: true; -fx-font-weight: 500;" text="You’re All Set!" />
+
+                <Button fx:id="continueButton" layoutX="153.0" layoutY="267.0" prefHeight="25.26" prefWidth="68.0" style="-fx-background-color: #00FFF0; -fx-text-fill: black; -fx-background-radius: 0;" text="Finish" />
+
+                <Label layoutX="51.0" layoutY="217.0" prefHeight="18.0" prefWidth="336.0" style="-fx-text-fill: white;" text="Open the downloaded sample project in your IDE as shown " />
+                <Label layoutX="153.0" layoutY="235.0" prefHeight="18.0" prefWidth="94.0" style="-fx-text-fill: white;" text="In the video." />
+
+                <AnchorPane fx:id="webViewContainer" prefHeight="121.0" prefWidth="292.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+                    <ImageView fx:id="infoImageView" fitHeight="121.0" fitWidth="292.0" layoutX="69.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@../assets/info.png" />
+                        </image>
+                    </ImageView>
+                    <children>
+                        <WebView fx:id="webView" layoutX="56.0" layoutY="23.0" prefHeight="121.0" prefWidth="292.0" visible="false" />
+                    </children>
+                </AnchorPane>
+                <Label layoutX="55.0" layoutY="306.0" prefHeight="18.0" prefWidth="111.0" />
+            </children>
+        </AnchorPane>
+
+        <!-- Pane for embedding the media player (WebView) -->
+        <AnchorPane fx:id="mediaPane" layoutX="500.0" layoutY="50.0" prefHeight="400.0" prefWidth="400.0" style="-fx-background-color: black;" />
+
+              <ImageView fitHeight="589.0" fitWidth="404.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <image>
+                <Image url="@../assets/bg6.png" />
+            </image>
+        </ImageView>
+
+              <ImageView layoutX="515.0" layoutY="115.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="133.80999999999995" AnchorPane.rightAnchor="88.0" AnchorPane.topAnchor="115.0">
+            <image>
+                <Image url="@../assets/Eva7.png" />
+            </image>
+        </ImageView>
+        <ImageView fx:id="arrowImageView" fitHeight="26.0" fitWidth="22.0" layoutX="73.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../assets/arrow.png" />
+            </image>
+        </ImageView>
+    </children>
+</AnchorPane>
