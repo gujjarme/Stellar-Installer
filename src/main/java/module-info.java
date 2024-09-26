@@ -1,4 +1,4 @@
-module com.vaf.stellarinstaller {
+module com.vaf.stellar {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.web;

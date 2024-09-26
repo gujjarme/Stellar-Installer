@@ -62,6 +62,7 @@ public class JDKDetailsController {
     private void goToPreviousScreen() {
         try {
             // Load the get-started.fxml file
+            webView.setVisible(Boolean.FALSE);
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/vaf/stellar/views/get-started.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
             Stage stage = (Stage) arrowImageView.getScene().getWindow();
@@ -89,10 +90,12 @@ public class JDKDetailsController {
     @FXML
     private void openMavenInstallationScreen() {
         try {
+            webView.setVisible(Boolean.FALSE);
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/vaf/stellar/views/maven-installation.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
             Stage stage = (Stage) continueButton.getScene().getWindow();
             stage.setScene(scene);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
