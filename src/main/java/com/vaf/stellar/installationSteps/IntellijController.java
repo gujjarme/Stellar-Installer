@@ -77,7 +77,7 @@ public class IntellijController {
     private void openJDKDownloadPage() {
         try {
 
-            String url = "https://maven.apache.org/guides/getting-started/windows-prerequisites.html";
+            String url = "https://www.jetbrains.com/idea/";
             if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
                 Desktop.getDesktop().browse(new URI(url));
             }
