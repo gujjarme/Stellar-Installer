@@ -6,13 +6,19 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
+
+import java.io.File;
 import java.io.IOException;
 
 public class StellarController {
 
     @FXML
     private Button continueButton;
+
+    @FXML
+    private Button startDownloadButton;
 
     @FXML
     private ImageView arrowImageView;
@@ -22,6 +28,7 @@ public class StellarController {
     public void initialize() {
 
         arrowImageView.setOnMouseClicked(event -> goToPreviousScreen());
+        startDownloadButton.setOnMouseClicked(mouseEvent -> onStartDownloadClick());
     }
 
 
@@ -38,17 +45,43 @@ public class StellarController {
         }
     }
 
-
     @FXML
-    private void openStellarDownloadScreen() {
+    protected void onStartDownloadClick() {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Select the Download Location");
+        File selectedDirectory = directoryChooser.showDialog(startDownloadButton.getScene().getWindow());
+
+        if (selectedDirectory != null) {
+            startDownload(selectedDirectory.getAbsolutePath());
+        }
+    }
+
+    private void startDownload(String saveDir) {
+        // Load the progress scene and pass the save directory to it
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/vaf/stellar/views/stellar-download-info.fxml"));
-            Scene scene = new Scene(fxmlLoader.load());
-            Stage stage = (Stage) continueButton.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/vaf/stellar/views/progressDisplay.fxml"));
+            Scene scene = new Scene(loader.load());
+            ProgressDisplayController controller = loader.getController();
+
+            Stage stage = (Stage) startDownloadButton.getScene().getWindow();
             stage.setScene(scene);
+            controller.beginDownload(saveDir);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+//    @FXML
+//    private void openStellarDownloadScreen() {
+//        try {
+//            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/vaf/stellar/views/stellar-download-info.fxml"));
+//            Scene scene = new Scene(fxmlLoader.load());
+//            Stage stage = (Stage) continueButton.getScene().getWindow();
+//            stage.setScene(scene);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 }

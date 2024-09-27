@@ -16,9 +16,13 @@
                 <Label layoutX="97.0" layoutY="27.0" prefHeight="32.0" prefWidth="206.0" style="-fx-text-fill: white; -fx-font-size: 22px; -fx-wrap-text: true; -fx-font-weight: 500; -fx-font-family: 'Inter';" text="Download Stellar" />
 
 
-                <Button fx:id="continueButton" layoutX="124.0" layoutY="124.0" onAction="#openStellarDownloadScreen" prefHeight="26.0" prefWidth="100.0" style="-fx-background-color: #00FFF0; -fx-text-fill: black; -fx-font-size: 9.85;" text="Start Downloading" />
+                <Button fx:id="startDownloadButton" layoutX="124.0" layoutY="124.0" prefHeight="26.0" prefWidth="100.0" style="-fx-background-color: #00FFF0; -fx-text-fill: black; -fx-font-size: 9.85;" text="Start Downloading" />
                 <Label layoutX="38.0" layoutY="92.0" prefHeight="18.0" prefWidth="258.0" style="-fx-text-fill: white;" text="the installation." />
                 <Label layoutX="38.0" layoutY="73.0" prefHeight="18.0" prefWidth="324.0" style="-fx-text-fill: white;" text="Click the button below to download Stellar and complete " />
+<!--                <Button fx:id="startDownloadButton" layoutX="124.0" layoutY="124.0" prefHeight="26.0" prefWidth="100.0" style="-fx-background-color: #00FFF0; -fx-text-fill: black; -fx-font-size: 9.85;" text="Start Downloading" />-->
+<!--                <Label layoutX="88.0" layoutY="91.0" prefHeight="18.0" prefWidth="258.0" style="-fx-text-fill: white;" text="Stellar and complete the installation." />-->
+<!--                <Label layoutX="88.0" layoutY="73.0" prefHeight="18.0" prefWidth="258.0" style="-fx-text-fill: white;" text="Click the button below to download" />-->
+
             </children>
         </AnchorPane>
 

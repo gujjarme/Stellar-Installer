@@ -42,6 +42,10 @@ public class FinishController {
         // Handle ImageView click to open the WebView window
         infoImageView.setOnMouseClicked(event -> openWebViewWindow());
         arrowImageView.setOnMouseClicked(event -> goToPreviousScreen());
+        continueButton.setOnAction(event -> closeWindow());
+
+
+
 
     }
 
@@ -62,7 +66,7 @@ public class FinishController {
     private void goToPreviousScreen() {
         try {
             // Load the get-started.fxml file
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/vaf/stellar/views/stellar-download-info.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/vaf/stellar/views/stellar.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
             Stage stage = (Stage) arrowImageView.getScene().getWindow();
             stage.setScene(scene);
@@ -71,7 +75,10 @@ public class FinishController {
         }
     }
 
-
-
+    private void closeWindow() {
+// Close the current window
+        Stage stage = (Stage) continueButton.getScene().getWindow();
+        stage.close();
+    }
 
 }

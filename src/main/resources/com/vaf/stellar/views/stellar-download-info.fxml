@@ -6,6 +6,8 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.ProgressBar?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.81" prefWidth="945.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.vaf.stellar.installationSteps.StellarDownloadInfoController">
     <children>
         <Label layoutX="107.0" layoutY="35.0" style="-fx-text-fill: white; -fx-font-size: 18px;" text="Step 4 of 5" />
@@ -22,11 +24,16 @@
 
                       <!-- Continue Button -->
                       <Button fx:id="continueButton" layoutX="149.0" layoutY="99.0" onAction="#FinishScreen" prefHeight="20.0" prefWidth="80.0" style="-fx-background-color: #00FFF0; -fx-text-fill: black;" text="Continue" />
-                      <ImageView fitHeight="6.0" fitWidth="291.0" layoutX="70.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true">
-                          <image>
-                              <Image url="@../assets/Prpgressbar.png" />
-                          </image>
-                      </ImageView>
+                        <AnchorPane fx:id="progressSection" style="-fx-background-color: rgba(30, 30, 30, 0.8); -fx-border-color: white; -fx-border-width: 2; -fx-background-radius: 10; -fx-border-radius: 10;"
+                                    AnchorPane.leftAnchor="50" AnchorPane.topAnchor="150" AnchorPane.bottomAnchor="150" AnchorPane.rightAnchor="400">
+
+                            <!-- VBox to center content vertically and horizontally -->
+                            <VBox alignment="CENTER" spacing="10" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0">
+                                <Label fx:id="percentageLabel" text="0%" style="-fx-font-size: 22px; -fx-text-fill: white;" />
+                                <ProgressBar fx:id="downloadProgressBar" prefWidth="300" prefHeight="25" style="-fx-accent: purple;" />
+                                <Label fx:id="statusLabel" text="This will take a few moments..." style="-fx-font-size: 14px; -fx-text-fill: white;" />
+                            </VBox>
+                        </AnchorPane>
                     </children>
                 </AnchorPane>
             </children>

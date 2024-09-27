@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.control.Button?>
+<StackPane style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.vaf.stellar.installationSteps.ProgressDisplayController">
+
+    <!-- Full Background Image including robot and gradient -->
+    <ImageView fitWidth="945.29" fitHeight="597.81" preserveRatio="false" StackPane.alignment="CENTER">
+        <image>
+            <Image url="@../assets/fullBackGroundImage.png" />
+        </image>
+    </ImageView>
+
+    <!-- Main Content AnchorPane for overlay elements -->
+    <AnchorPane fx:id="mainPane" prefHeight="600" prefWidth="800" style="-fx-padding: 50;">
+
+        <!-- Back Arrow Button -->
+        <ImageView fx:id="arrowImageView" fitHeight="26.0" fitWidth="22.0" layoutX="73.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../assets/arrow.png" />
+            </image>
+        </ImageView>
+
+        <!-- Step Indicator Label -->
+        <Label text="Step 4 of 5" style="-fx-font-size: 18px; -fx-text-fill: white;" AnchorPane.leftAnchor="60" AnchorPane.topAnchor="-15" />
+
+        <!-- Progress Bar Section -->
+        <AnchorPane fx:id="progressSection" style="-fx-background-color: rgba(30, 30, 30, 0.8); -fx-border-color: white; -fx-border-width: 2; -fx-background-radius: 10; -fx-border-radius: 10;"
+                    AnchorPane.leftAnchor="50" AnchorPane.topAnchor="150" AnchorPane.bottomAnchor="150" AnchorPane.rightAnchor="400">
+
+            <!-- VBox to center content vertically and horizontally -->
+            <VBox alignment="CENTER" spacing="10" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0">
+                <Label fx:id="percentageLabel" text="0%" style="-fx-font-size: 14px; -fx-text-fill: white;" />
+                <ProgressBar fx:id="downloadProgressBar" prefWidth="300" prefHeight="15" style="-fx-accent: purple;" />
+                <Label fx:id="statusLabel" text="This will take few moments..." style="-fx-font-size: 12px; -fx-text-fill: white;" />
+                <Button fx:id="continueButton" layoutX="149.0" layoutY="99.0" onAction="#FinishScreen" disable="true" prefHeight="20.0" prefWidth="80.0" style="-fx-background-color: #00FFF0; -fx-text-fill: black;" text="Continue" />
+            </VBox>
+        </AnchorPane>
+    </AnchorPane>
+</StackPane>
