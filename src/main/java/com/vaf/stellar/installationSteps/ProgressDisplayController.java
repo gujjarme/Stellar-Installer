@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
@@ -64,5 +65,14 @@ public class ProgressDisplayController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    public void showErrorPopup(String errorMessage) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("An Error Occurred");
+            alert.setContentText(errorMessage);
+            alert.showAndWait();
+        });
     }
 }
