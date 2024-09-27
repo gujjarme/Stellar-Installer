@@ -2,7 +2,6 @@ package com.vaf.stellar.installationSteps;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
@@ -31,37 +30,48 @@ public class JDKDetailsController {
     @FXML
     private AnchorPane webViewContainer;
 
-
     @FXML
     private Button continueButton;
+
     @FXML
     private ImageView arrowImageView;
 
+    private boolean isVideoPlaying = false; // Flag to track if the video is playing
 
     @FXML
     public void initialize() {
-        // Handle ImageView click to open the WebView window
+        // Existing initialization code
         infoImageView.setOnMouseClicked(event -> openWebViewWindow());
-        arrowImageView.setOnMouseClicked(event -> goToPreviousScreen());
-        // Handle Hyperlink click to open the JDK download page
+        arrowImageView.setOnMouseClicked(event -> goToPreviousScreen()); // This will now stop the video if playing
         downloadJDKLink.setOnAction(event -> openJDKDownloadPage());
+        continueButton.setOnAction(event -> proceedToMavenInstallation());
     }
 
     private void openWebViewWindow() {
-        String videoUrl = "https://www.youtube.com/embed/P_tAU3GM9XI?autoplay=1";
-        String containerId = "movie_player";
-        webView.setVisible(Boolean.TRUE);
-        infoImageView.setVisible(Boolean.FALSE);
+        String videoUrl = "https://www.youtube.com/embed/P_tAU3GM9XI?autoplay=1&controls=1";
+        webView.setVisible(true);
+        infoImageView.setVisible(false);
         WebEngine webEngine = webView.getEngine();
-        //webEngine.setJavaScriptEnabled(true);
-
         webEngine.load(videoUrl);
-
-
+        isVideoPlaying = true; // Set flag to true when the video starts
     }
+
+    private void stopVideo() {
+        if (isVideoPlaying) { // Check if video is playing before attempting to pause
+            WebEngine webEngine = webView.getEngine();
+            webEngine.executeScript("document.querySelector('video').pause();"); // Pause the video
+            isVideoPlaying = false; // Update flag to false as video is paused
+        }
+    }
+
+    private void proceedToMavenInstallation() {
+        stopVideo(); // Check and stop the video if it's playing
+        openMavenInstallationScreen(); // Proceed to the next screen
+    }
+
     private void goToPreviousScreen() {
+        stopVideo(); // Check and stop the video if it's playing
         try {
-            // Load the get-started.fxml file
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/vaf/stellar/views/get-started.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
             Stage stage = (Stage) arrowImageView.getScene().getWindow();
@@ -73,15 +83,11 @@ public class JDKDetailsController {
 
     private void openJDKDownloadPage() {
         try {
-            // Define the JDK download URL
             String url = "https://www.oracle.com/java/technologies/javase-jdk11-downloads.html";
-
-            // Open the URL in the default system browser
             if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
                 Desktop.getDesktop().browse(new URI(url));
             }
         } catch (IOException | URISyntaxException e) {
-            // Handle any exceptions that occur
             e.printStackTrace();
         }
     }

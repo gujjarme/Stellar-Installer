@@ -14,10 +14,10 @@
             <children>
                 <Label layoutX="132.0" layoutY="169.0" style="-fx-text-fill: white; -fx-font-size: 22px; -fx-wrap-text: true; -fx-font-weight: 500;" text="You’re All Set!" />
 
-                <Button fx:id="continueButton" layoutX="153.0" layoutY="267.0" prefHeight="25.26" prefWidth="68.0" style="-fx-background-color: #00FFF0; -fx-text-fill: black; -fx-background-radius: 0;" text="Finish" />
+                <Button fx:id="continueButton" layoutX="158.0" layoutY="256.0" prefHeight="25.26" prefWidth="68.0" style="-fx-background-color: #00FFF0; -fx-text-fill: black; -fx-background-radius: 0;" text="Finish" />
 
-                <Label layoutX="51.0" layoutY="217.0" prefHeight="18.0" prefWidth="336.0" style="-fx-text-fill: white;" text="Open the downloaded sample project in your IDE as shown " />
-                <Label layoutX="153.0" layoutY="235.0" prefHeight="18.0" prefWidth="94.0" style="-fx-text-fill: white;" text="In the video." />
+                <Label layoutX="70.0" layoutY="208.0" prefHeight="18.0" prefWidth="336.0" style="-fx-text-fill: white;" text="Open the downloaded sample project in your IDE as " />
+                <Label layoutX="70.0" layoutY="226.0" prefHeight="18.0" prefWidth="176.0" style="-fx-text-fill: white;" text="shown In the video." />
 
                 <AnchorPane fx:id="webViewContainer" prefHeight="121.0" prefWidth="292.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
                     <ImageView fx:id="infoImageView" fitHeight="121.0" fitWidth="292.0" layoutX="69.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true">
@@ -42,7 +42,7 @@
             </image>
         </ImageView>
 
-              <ImageView layoutX="515.0" layoutY="115.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="133.80999999999995" AnchorPane.rightAnchor="88.0" AnchorPane.topAnchor="115.0">
+              <ImageView layoutX="535.0" layoutY="89.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="133.80999999999995" AnchorPane.rightAnchor="88.0" AnchorPane.topAnchor="115.0">
             <image>
                 <Image url="@../assets/Eva7.png" />
             </image>
