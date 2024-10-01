@@ -14,17 +14,15 @@
         <Label layoutX="107.0" layoutY="35.0" style="-fx-text-fill: white; -fx-font-size: 18px;" text="Step 1 of 5" />
         <AnchorPane layoutX="73.0" layoutY="100.0" prefHeight="402.0" prefWidth="391.0" style="-fx-background-color: #1E1E1E; -fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-radius: 10;">
             <children>
-                <Label layoutX="90.0" layoutY="159.0" style="-fx-text-fill: white; -fx-font-size: 22px; -fx-wrap-text: true; -fx-font-weight: 500;" text="JDK Installation and" />
-                <Label layoutX="120.0" layoutY="185.0" prefHeight="27.0" prefWidth="150.0" style="-fx-text-fill: white; -fx-font-size: 22px; -fx-font-weight: 500;" text="Environment" />
-                <Label layoutX="99.0" layoutY="210.0" prefHeight="18.0" prefWidth="191.0" style="-fx-text-fill: white; -fx-font-weight: 500; -fx-font-size: 22;" text="Variables Set Up" />
+                <Label layoutX="62.0" layoutY="176.0" prefHeight="32.0" prefWidth="267.0" style="-fx-text-fill: white; -fx-font-size: 22px; -fx-wrap-text: true; -fx-font-weight: 500;" text="JDK Installation and Setup" />
 
-                <Button fx:id="continueButton" layoutX="144.0" layoutY="337.0" onAction="#openMavenInstallationScreen" prefHeight="25.26" prefWidth="68.0" style="-fx-background-color: #00FFF0; -fx-text-fill: black; -fx-background-radius: 0;" text="Continue" />
+                <Button fx:id="continueButton" layoutX="144.0" layoutY="293.0" onAction="#openMavenInstallationScreen" prefHeight="25.26" prefWidth="68.0" style="-fx-background-color: #00FFF0; -fx-text-fill: black; -fx-background-radius: 0;" text="Continue" />
 
-                <Label layoutX="60.0" layoutY="248.0" prefHeight="18.0" prefWidth="305.0" style="-fx-text-fill: white;" text="If JDK is already installed in your system, please " />
-                <Label layoutX="56.0" layoutY="266.0" prefHeight="18.0" prefWidth="258.0" style="-fx-text-fill: white;" text="continue; otherwise, install the latest JDK version" />
-                <Label layoutX="56.0" layoutY="284.0" prefHeight="18.0" prefWidth="327.0" style="-fx-text-fill: white;" text="and set up the environment variables following the" />
+                <Label layoutX="43.0" layoutY="218.0" prefHeight="18.0" prefWidth="305.0" style="-fx-text-fill: white;" text="If JDK is already installed in your system, please continue" />
+                <Label layoutX="42.0" layoutY="236.0" prefHeight="18.0" prefWidth="306.0" style="-fx-text-fill: white;" text="otherwise, install it and set up the environment variables" />
+                <Label layoutX="42.0" layoutY="254.0" prefHeight="18.0" prefWidth="327.0" style="-fx-text-fill: white;" text="following the steps in the video." />
 
-                <Hyperlink fx:id="downloadJDKLink" layoutX="178.0" layoutY="301.0" style="-fx-text-fill: cyan; -fx-font-size: 14px; -fx-underline: true;" text="Download JDK" />
+                <Hyperlink fx:id="downloadJDKLink" layoutX="212.0" layoutY="250.0" style="-fx-text-fill: cyan; -fx-font-size: 12px; -fx-underline: true;" text="Download JDK" />
 
                 <AnchorPane fx:id="webViewContainer" prefHeight="121.0" prefWidth="292.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
                     <ImageView fx:id="infoImageView" fitHeight="121.0" fitWidth="292.0" layoutX="51.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true">
@@ -37,7 +35,6 @@
                     </children>
                 </AnchorPane>
             <Label layoutX="55.0" layoutY="306.0" prefHeight="18.0" prefWidth="111.0" />
-            <Label layoutX="81.0" layoutY="305.0" prefHeight="18.0" prefWidth="121.0" style="-fx-text-fill: white;" text="steps in the video." />
             </children>
         </AnchorPane>
 
@@ -50,7 +47,7 @@
             </image>
         </ImageView>
 
-        <ImageView fitHeight="0.0" fitWidth="0.0" layoutX="491.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="177.80999999999995" AnchorPane.rightAnchor="127.0" AnchorPane.topAnchor="100.0">
+        <ImageView fitHeight="0.0" fitWidth="0.0" layoutX="535.0" layoutY="89.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="177.80999999999995" AnchorPane.rightAnchor="127.0" AnchorPane.topAnchor="100.0">
             <image>
                 <Image url="@../assets/Eva2.png" />
             </image>

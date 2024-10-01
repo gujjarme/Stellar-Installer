@@ -11,16 +11,16 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.81" prefWidth="945.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.vaf.stellar.installationSteps.MavenController">
     <children>
         <Label layoutX="107.0" layoutY="35.0" style="-fx-text-fill: white; -fx-font-size: 18px;" text="Step 2 of 5" />
-        <AnchorPane layoutX="73.0" layoutY="100.0" prefHeight="348.0" prefWidth="391.0" style="-fx-background-color: #1E1E1E; -fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-radius: 10;">
+        <AnchorPane layoutX="73.0" layoutY="100.0" prefHeight="402.0" prefWidth="391.0" style="-fx-background-color: #1E1E1E; -fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-radius: 10;">
             <children>
-                <Label layoutX="108.0" layoutY="174.0" style="-fx-text-fill: white; -fx-font-size: 22px; -fx-wrap-text: true; -fx-font-weight: 500; -fx-font-family: 'Inter';" text="Maven Installation" />
+                <Label layoutX="64.0" layoutY="173.0" style="-fx-text-fill: white; -fx-font-size: 22px; -fx-wrap-text: true; -fx-font-weight: 500; -fx-font-family: 'Inter';" text="Maven Installation and Setup" />
 
-                <Button fx:id="continueButton" layoutX="140.0" layoutY="287.0" onAction="#openIntellijInstallationScreen" prefHeight="25.0" prefWidth="68.0" style="-fx-background-color: #00FFF0; -fx-text-fill: black; -fx-background-radius: 0;" text="Continue" />
+                <Button fx:id="continueButton" layoutX="140.0" layoutY="288.0" onAction="#openIntellijInstallationScreen" prefHeight="25.0" prefWidth="68.0" style="-fx-background-color: #00FFF0; -fx-text-fill: black; -fx-background-radius: 0;" text="Continue" />
 
-                <Label layoutX="63.0" layoutY="206.0" prefHeight="18.0" prefWidth="327.0" style="-fx-text-fill: white; -fx-font-weight: 400; -fx-font-size: 12;" text="If Maven is already installed in your system, please " />
-                <Label layoutX="77.0" layoutY="224.0" prefHeight="18.0" prefWidth="258.0" style="-fx-text-fill: white;" text="continue; otherwise, install the latest maven" />
-                <Label layoutX="89.0" layoutY="242.0" prefHeight="18.0" prefWidth="258.0" style="-fx-text-fill: white;" text="version and follow the steps in the video." />
-                <Hyperlink fx:id="downloadJDKLink" layoutX="123.0" layoutY="251.0" style="-fx-text-fill: cyan; -fx-font-size: 14px; -fx-underline: true;" text="Download Maven" />
+                <Label layoutX="52.0" layoutY="215.0" prefHeight="18.0" prefWidth="327.0" style="-fx-text-fill: white; -fx-font-weight: 400; -fx-font-size: 12;" text="If Maven is  installed in your system, please continue; " />
+                <Label layoutX="52.0" layoutY="233.0" prefHeight="18.0" prefWidth="307.0" style="-fx-text-fill: white;" text="otherwise, install the latest version and follow the steps" />
+                <Label layoutX="50.0" layoutY="251.0" prefHeight="18.0" prefWidth="292.0" style="-fx-text-fill: white;" text=" in the video." />
+                <Hyperlink fx:id="downloadJDKLink" layoutX="123.0" layoutY="248.0" style="-fx-text-fill: cyan; -fx-font-size: 12px; -fx-underline: true;" text="Download Maven" />
                 <AnchorPane fx:id="webViewContainer" prefHeight="121.0" prefWidth="292.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
                     <ImageView fx:id="infoImageView" fitHeight="121.0" fitWidth="292.0" layoutX="56.0" layoutY="34.0" pickOnBounds="true" preserveRatio="true">
                         <image>
@@ -41,7 +41,7 @@
                 <Image url="@../assets/bg3.png" />
             </image>
         </ImageView>
-        <ImageView fitHeight="0.0" fitWidth="0.0" layoutX="555.0" layoutY="127.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="140.80999999999995" AnchorPane.rightAnchor="68.0" AnchorPane.topAnchor="127.0">
+        <ImageView fitHeight="0.0" fitWidth="0.0" layoutX="535.0" layoutY="89.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="140.80999999999995" AnchorPane.rightAnchor="68.0" AnchorPane.topAnchor="127.0">
             <image>
                 <Image url="@../assets/Eva3.png" />
             </image>
