@@ -45,6 +45,7 @@ public class JDKDetailsController {
         arrowImageView.setOnMouseClicked(event -> goToPreviousScreen()); // This will now stop the video if playing
         downloadJDKLink.setOnAction(event -> openJDKDownloadPage());
         continueButton.setOnAction(event -> proceedToMavenInstallation());
+        isPlaying = false;
     }
 
     private void openWebViewWindow() {

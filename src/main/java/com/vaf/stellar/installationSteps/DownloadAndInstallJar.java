@@ -100,29 +100,59 @@ public class DownloadAndInstallJar {
         }
     }
 
-    private static boolean runMavenInstall(String jarPath, double startProgress, double endProgress, ProgressDisplayController controller) {
-        try {
-            String mavenCommand = "mvn install:install-file -Dfile=" + jarPath +
-                    " -DgroupId=Stellar -DartifactId=io.vstellar -Dversion=1.2.0 -Dpackaging=jar";
 
-            ProcessBuilder processBuilder = new ProcessBuilder("cmd.exe", "/c", mavenCommand);
-            processBuilder.directory(new File(System.getProperty("user.home")));
-            Process process = processBuilder.start();
 
-            // Simulate progress for Maven installation
-            for (int i = 0; i <= 100; i += 10) {
-                double progress = startProgress + (i / 100.0) * (endProgress - startProgress);
-                Platform.runLater(() -> controller.updateProgress(progress));
-                Thread.sleep(100); // Adjust the delay as needed for smooth progress
-            }
+//    private static void runMavenInstall(String jarPath, double startProgress, double endProgress, ProgressDisplayController controller) throws Exception {
+//        String os = System.getProperty("os.name").toLowerCase();
+//        String mavenCommand = "mvn install:install-file -Dfile=" + jarPath +
+//                " -DgroupId=Stellar -DartifactId=io.vstellar -Dversion=1.2.0 -Dpackaging=jar";
+//
+//        ProcessBuilder processBuilder;
+//        if (os.contains("win")) {
+//            processBuilder = new ProcessBuilder("cmd.exe", "/c", mavenCommand);
+//        } else {
+//            processBuilder = new ProcessBuilder("/bin/sh", "-c", mavenCommand);
+//        }
+//
+//        processBuilder.directory(new File(System.getProperty("user.home")));
+//        Process process = processBuilder.start();
+//
+//        // Simulate progress for Maven installation
+//        for (int i = 0; i <= 100; i += 10) {
+//            double progress = startProgress + (i / 100.0) * (endProgress - startProgress);
+//            Platform.runLater(() -> controller.updateProgress(progress));
+//            Thread.sleep(100); // Adjust the delay as needed for smooth progress
+//        }
+//
+//        process.waitFor();
+//    }
+private static boolean runMavenInstall(String jarPath, double startProgress, double endProgress, ProgressDisplayController controller) throws IOException, InterruptedException {
+    String mavenCommand = "mvn install:install-file -Dfile=" + jarPath +
+            " -DgroupId=Stellar -DartifactId=io.vstellar -Dversion=1.2.0 -Dpackaging=jar";
 
-            process.waitFor();
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+    // Create the ProcessBuilder directly with Maven command split into arguments
+    ProcessBuilder processBuilder = new ProcessBuilder("mvn", "install:install-file",
+            "-Dfile=" + jarPath,
+            "-DgroupId=Stellar",
+            "-DartifactId=io.vstellar",
+            "-Dversion=1.2.0",
+            "-Dpackaging=jar");
+
+    processBuilder.directory(new File(System.getProperty("user.home")));  // Set the working directory to user's home
+
+    Process process = processBuilder.start();  // Start the process
+
+    // Simulate progress for Maven installation
+    for (int i = 0; i <= 100; i += 10) {
+        double progress = startProgress + (i / 100.0) * (endProgress - startProgress);
+        Platform.runLater(() -> controller.updateProgress(progress));  // Update progress in UI
+        Thread.sleep(100);  // Adjust the delay as needed for smooth progress
     }
+
+    process.waitFor();  // Wait for the process to complete
+
+   return process.exitValue() == 0;  // Return true if Maven install was successful
+}
 
     private static boolean extractAndRenameZip(String zipFilePath, String extractDir, String newDirName, double startProgress, double endProgress, ProgressDisplayController controller) {
         try {
