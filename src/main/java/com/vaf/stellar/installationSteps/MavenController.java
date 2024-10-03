@@ -53,24 +53,16 @@ public class MavenController {
     }
 
     private void openWebViewWindow() {
-        String videoUrl = "https://www.youtube.com/embed/P_tAU3GM9XI?autoplay=1";
-        String videoUrlPaused = "https://www.youtube.com/embed/P_tAU3GM9XI?&controls=1";
 
-        String containerId = "movie_player";
-        webView.setVisible(Boolean.TRUE);
-        infoImageView.setVisible(Boolean.FALSE);
+        this.isPlaying=Boolean.TRUE;
+        String videoUrl = OSUtils.getVideoURL();
+        webView.setVisible(true);
+        infoImageView.setVisible(false);
         WebEngine webEngine = webView.getEngine();
         webEngine.setJavaScriptEnabled(true);
-        this.isPlaying=Boolean.TRUE;
         webEngine.load(videoUrl);
-        webEngine.locationProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.contains("youtube.com")) {
-                System.out.println("YouTube logo clicked! Preventing navigation.");
-                webView.getEngine().executeScript("document.querySelector('video').pause();");
-                webEngine.load(videoUrlPaused); // Cancel navigation back to the original pagen
-                openInSystemBrowserAsync(videoUrl);
-            }
-        });
+
+
     }
 
     private void openInSystemBrowserAsync(String url) {

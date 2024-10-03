@@ -51,9 +51,7 @@ public class IntellijController {
     }
 
     private void openWebViewWindow() {
-        String videoUrl = "https://www.youtube.com/embed/P_tAU3GM9XI?autoplay=1";
-        String videoUrlPaused = "https://www.youtube.com/embed/P_tAU3GM9XI?&controls=1";
-        String containerId = "movie_player";
+        String videoUrl = OSUtils.getVideoURL();
         webView.setVisible(Boolean.TRUE);
         infoImageView.setVisible(Boolean.FALSE);
         WebEngine webEngine = webView.getEngine();
@@ -64,7 +62,7 @@ public class IntellijController {
             if (newValue.contains("youtube.com")) {
                 System.out.println("YouTube logo clicked! Preventing navigation.");
                 webView.getEngine().executeScript("document.querySelector('video').pause();");
-                webEngine.load(videoUrlPaused); // Cancel navigation back to the original pagen
+                webEngine.load(videoUrl); // Cancel navigation back to the original pagen
                 openInSystemBrowserAsync(videoUrl);
 
             }
