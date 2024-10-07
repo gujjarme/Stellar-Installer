@@ -31,7 +31,7 @@ public class DownloadAndInstallJar {
                     String jarFilePath = saveDir + File.separator + "Stellar-1.2.0.jar";
                     downloadFile(jarUrl, jarFilePath, 0.0, 0.3, controller);
 
-                    if(runMavenInstall(jarFilePath, 0.3, 0.6, controller)){
+                    if(!runMavenInstall(jarFilePath, 0.3, 0.6, controller)){
                         showErrorPopup("Something went wrong.");
                     }
 
@@ -92,11 +92,12 @@ public class DownloadAndInstallJar {
 
 
     private static boolean runMavenInstall(String jarPath, double startProgress, double endProgress, ProgressDisplayController controller) throws IOException, InterruptedException {
-        String mavenCommand = "mvn install:install-file -Dfile=" + jarPath +
-                " -DgroupId=Stellar -DartifactId=io.vstellar -Dversion=1.2.0 -Dpackaging=jar";
+        String os = System.getProperty("os.name").toLowerCase();
+        String mavenKeyword = os.contains("win") ? "mvn.cmd" : "mvn";
+
 
         // Create the ProcessBuilder directly with Maven command split into arguments
-        ProcessBuilder processBuilder = new ProcessBuilder("mvn", "install:install-file",
+        ProcessBuilder processBuilder = new ProcessBuilder(mavenKeyword, "install:install-file",
                 "-Dfile=" + jarPath,
                 "-DgroupId=Stellar",
                 "-DartifactId=io.vstellar",
