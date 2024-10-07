@@ -61,6 +61,13 @@ public class MavenController {
         WebEngine webEngine = webView.getEngine();
         webEngine.setJavaScriptEnabled(true);
         webEngine.load(videoUrl);
+        webEngine.locationProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.contains("youtube.com")) {
+                System.out.println("YouTube logo clicked! Preventing navigation.");
+                webEngine.load(videoUrl); // Cancel navigation back to the original page
+                openInSystemBrowserAsync(videoUrl);
+            }
+        });
 
 
     }
