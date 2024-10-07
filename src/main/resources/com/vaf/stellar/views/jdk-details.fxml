@@ -18,11 +18,11 @@
 
                 <Button fx:id="continueButton" layoutX="144.0" layoutY="293.0" onAction="#openMavenInstallationScreen" prefHeight="25.26" prefWidth="68.0" style="-fx-background-color: #00FFF0; -fx-text-fill: black; -fx-background-radius: 0;" text="Continue" />
 
-                <Label layoutX="43.0" layoutY="218.0" prefHeight="18.0" prefWidth="305.0" style="-fx-text-fill: white;" text="If JDK is already installed in your system, please continue" />
-                <Label layoutX="42.0" layoutY="236.0" prefHeight="18.0" prefWidth="306.0" style="-fx-text-fill: white;" text="otherwise, install it and set up the environment variables" />
-                <Label layoutX="42.0" layoutY="254.0" prefHeight="18.0" prefWidth="327.0" style="-fx-text-fill: white;" text="following the steps in the video." />
+                <Label layoutX="55.0" layoutY="217.0" prefHeight="18.0" prefWidth="335.0" style="-fx-text-fill: white;" text="If JDK is installed, please proceed;if not,kindly install it " />
+                <Label layoutX="55.0" layoutY="235.0" prefHeight="18.0" prefWidth="335.0" style="-fx-text-fill: white;" text="and set up the environment variables as shown in the" />
+                <Label layoutX="48.0" layoutY="254.0" prefHeight="18.0" prefWidth="327.0" style="-fx-text-fill: white;" text="  video." />
 
-                <Hyperlink fx:id="downloadJDKLink" layoutX="212.0" layoutY="250.0" style="-fx-text-fill: cyan; -fx-font-size: 12px; -fx-underline: true;" text="Download JDK" />
+                <Hyperlink fx:id="downloadJDKLink" layoutX="86.0" layoutY="251.0" style="-fx-text-fill: cyan; -fx-font-size: 12px; -fx-underline: true;" text="Download JDK" />
 
                 <AnchorPane fx:id="webViewContainer" prefHeight="121.0" prefWidth="292.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
                     <ImageView fx:id="infoImageView" fitHeight="121.0" fitWidth="292.0" layoutX="51.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true">
