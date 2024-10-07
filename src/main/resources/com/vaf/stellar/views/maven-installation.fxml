@@ -17,9 +17,9 @@
 
                 <Button fx:id="continueButton" layoutX="140.0" layoutY="288.0" onAction="#openIntellijInstallationScreen" prefHeight="25.0" prefWidth="68.0" style="-fx-background-color: #00FFF0; -fx-text-fill: black; -fx-background-radius: 0;" text="Continue" />
 
-                <Label layoutX="64.0" layoutY="214.0" prefHeight="18.0" prefWidth="283.0" style="-fx-text-fill: white; -fx-font-weight: 400; -fx-font-size: 12;" text="If Maven is  installed, please proceed; if not,Kindly  " />
+                <Label layoutX="64.0" layoutY="214.0" prefHeight="18.0" prefWidth="283.0" style="-fx-text-fill: white;" text="If Maven is  installed, please proceed, if not, kindly  " />
                 <Label layoutX="64.0" layoutY="232.0" prefHeight="18.0" prefWidth="270.0" style="-fx-text-fill: white;" text="download the latest version and follow the video" />
-                <Label layoutX="62.0" layoutY="251.0" prefHeight="18.0" prefWidth="292.0" style="-fx-text-fill: white;" text=" instructions" />
+                <Label layoutX="64.0" layoutY="251.0" prefHeight="18.0" prefWidth="292.0" style="-fx-text-fill: white;" text="instructions" />
                 <Hyperlink fx:id="downloadJDKLink" layoutX="131.0" layoutY="248.0" style="-fx-text-fill: cyan; -fx-font-size: 12px; -fx-underline: true;" text="Download Maven" />
                 <AnchorPane fx:id="webViewContainer" prefHeight="121.0" prefWidth="292.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
                     <ImageView fx:id="infoImageView" fitHeight="121.0" fitWidth="292.0" layoutX="56.0" layoutY="34.0" pickOnBounds="true" preserveRatio="true">

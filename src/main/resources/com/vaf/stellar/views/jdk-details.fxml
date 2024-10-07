@@ -18,9 +18,9 @@
 
                 <Button fx:id="continueButton" layoutX="144.0" layoutY="293.0" onAction="#openMavenInstallationScreen" prefHeight="25.26" prefWidth="68.0" style="-fx-background-color: #00FFF0; -fx-text-fill: black; -fx-background-radius: 0;" text="Continue" />
 
-                <Label layoutX="55.0" layoutY="217.0" prefHeight="18.0" prefWidth="335.0" style="-fx-text-fill: white;" text="If JDK is installed, please proceed;if not,kindly install it " />
+                <Label layoutX="55.0" layoutY="217.0" prefHeight="18.0" prefWidth="335.0" style="-fx-text-fill: white;" text="If JDK is installed, please proceed, if not, kindly install it " />
                 <Label layoutX="55.0" layoutY="235.0" prefHeight="18.0" prefWidth="335.0" style="-fx-text-fill: white;" text="and set up the environment variables as shown in the" />
-                <Label layoutX="48.0" layoutY="254.0" prefHeight="18.0" prefWidth="327.0" style="-fx-text-fill: white;" text="  video." />
+                <Label layoutX="55.0" layoutY="254.0" prefHeight="18.0" prefWidth="327.0" style="-fx-text-fill: white;" text="video." />
 
                 <Hyperlink fx:id="downloadJDKLink" layoutX="86.0" layoutY="251.0" style="-fx-text-fill: cyan; -fx-font-size: 12px; -fx-underline: true;" text="Download JDK" />
 

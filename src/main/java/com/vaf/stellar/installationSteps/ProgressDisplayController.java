@@ -39,8 +39,8 @@ public class ProgressDisplayController {
 
             // Change the status label when progress reaches 100%
             if (progress >= 1.0) {
-                statusLabel.setText("Installation done");
-                continueButton.setDisable(false);// Change the label text to "Installation done"
+                percentageLabel.setText("Download Complete");
+                continueButton.setDisable(false);
             }
         });
     }

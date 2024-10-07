@@ -7,9 +7,9 @@ public class OSUtils {
         if (os.contains("win")) {
             return "https://www.youtube.com/embed/HtXJe1rAZaI?autoplay=1&controls=1";
         } else if (os.contains("mac")) {
-            return "https://www.youtube.com/embed/HtXJe1rAZaI?autoplay=1";
+            return "https://www.youtube.com/embed/HtXJe1rAZaI?autoplay=1&controls=1";
         } else {
-            return "https://www.youtube.com/embed/HtXJe1rAZaI?autoplay=1";
+            return "https://www.youtube.com/embed/HtXJe1rAZaI?autoplay=1&controls=1";
         }
     }
 }
