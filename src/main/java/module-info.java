@@ -7,6 +7,7 @@ module com.vaf.stellar {
     requires com.dlsc.formsfx;
     requires org.kordamp.bootstrapfx.core;
     requires java.desktop;
+    //requires maven.embedder;
 
     // Allow JavaFX to reflect on these packages
     opens com.vaf.stellar to javafx.fxml;

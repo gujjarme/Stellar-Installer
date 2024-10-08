@@ -24,14 +24,18 @@ public class DownloadAndInstallJar {
             @Override
             protected Void call() {
                 try {
+                    String mavenUrl = "https://dlcdn.apache.org/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.zip";
                     String jarUrl = "https://bitbucket.org/stellar2/stellar-starter-project/downloads/Stellar-1.2.0.jar";
                     String projectUrl = "https://bitbucket.org/stellar2/stellar-starter-project/get/master.zip";
 
+                    //Download Maven
+                    downloadFile(mavenUrl,saveDir+File.separator+"apache-maven-3.9.9.zip",0.0,0.1,controller);
+                    extractAndRenameZip(saveDir+File.separator+"apache-maven-3.9.9.zip",saveDir,"apache-maven-3.9.9",0.1,0.2,controller);
                     // Download JAR (0% to 30%)
                     String jarFilePath = saveDir + File.separator + "Stellar-1.2.0.jar";
-                    downloadFile(jarUrl, jarFilePath, 0.0, 0.3, controller);
+                    downloadFile(jarUrl, jarFilePath, 0.2, 0.4, controller);
 
-                    if(!runMavenInstall(jarFilePath, 0.3, 0.6, controller)){
+                    if(!runMavenInstall(jarFilePath, 0.4, 0.6, controller,saveDir+File.separator+"apache-maven-3.9.9/bin/mvn")){
                         showErrorPopup("Something went wrong.");
                     }
 
@@ -91,13 +95,14 @@ public class DownloadAndInstallJar {
     }
 
 
-    private static boolean runMavenInstall(String jarPath, double startProgress, double endProgress, ProgressDisplayController controller) throws IOException, InterruptedException {
-        String os = System.getProperty("os.name").toLowerCase();
-        String mavenKeyword = os.contains("win") ? "mvn.cmd" : "mvn";
+    private static boolean runMavenInstall(String jarPath, double startProgress, double endProgress, ProgressDisplayController controller,String mavenPath) throws IOException, InterruptedException {
+        //MavenCli mavenCli = new MavenCli();
+//        String os = System.getProperty("os.name").toLowerCase();
+//        String mavenKeyword = os.contains("win") ? "mvn.cmd" : "mvn";
 
 
         // Create the ProcessBuilder directly with Maven command split into arguments
-        ProcessBuilder processBuilder = new ProcessBuilder(mavenKeyword, "install:install-file",
+        ProcessBuilder processBuilder = new ProcessBuilder(mavenPath, "install:install-file",
                 "-Dfile=" + jarPath,
                 "-DgroupId=Stellar",
                 "-DartifactId=io.vstellar",
