@@ -34,7 +34,7 @@ public class DownloadAndInstallJar {
                     // Download JAR (0% to 30%)
                     String jarFilePath = saveDir + File.separator + "Stellar-1.2.0.jar";
                     downloadFile(jarUrl, jarFilePath, 0.2, 0.4, controller);
-
+                    changeMavenPermissions(saveDir+File.separator+"apache-maven-3.9.9/bin/mvn");
                     if(!runMavenInstall(jarFilePath, 0.4, 0.6, controller,saveDir+File.separator+"apache-maven-3.9.9/bin/mvn")){
                         showErrorPopup("Something went wrong.");
                     }
@@ -64,7 +64,33 @@ public class DownloadAndInstallJar {
         executor.execute(task);
 
     }
+    public static boolean changeMavenPermissions(String mavenPath) {
+        // Command to change the permissions
+        String[] command = { "chmod", "+x", mavenPath };
 
+        ProcessBuilder processBuilder = new ProcessBuilder(command);
+
+        try {
+            // Start the process
+            Process process = processBuilder.start();
+
+            // Wait for the process to complete
+            int exitCode = process.waitFor();
+
+            // Check the exit code
+            if (exitCode == 0) {
+                System.out.println("Permissions changed successfully for: " + mavenPath);
+                return true; // Success
+            } else {
+                System.err.println("Failed to change permissions. Exit code: " + exitCode);
+                // Log the error output=
+                return false; // Failure
+            }
+        } catch (IOException | InterruptedException e) {
+            System.err.println("An error occurred while changing permissions: " + e.getMessage());
+            return false; // Exception occurred
+        }
+    }
     private static void downloadFile(String fileURL, String saveFilePath, double startProgress, double endProgress, ProgressDisplayController controller) throws InterruptedException {
         try {
             URL url = new URL(fileURL);
@@ -109,7 +135,7 @@ public class DownloadAndInstallJar {
                 "-Dversion=1.2.0",
                 "-Dpackaging=jar");
 
-        processBuilder.directory(new File(System.getProperty("user.home")));  // Set the working directory to user's home
+       // processBuilder.directory(new File(System.getProperty("user.home")));  // Set the working directory to user's home
 
         Process process = processBuilder.start();  // Start the process
 
@@ -225,4 +251,3 @@ public class DownloadAndInstallJar {
         });
     }
 }
-
