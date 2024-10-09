@@ -4,8 +4,6 @@ package com.vaf.stellar.installationSteps;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.control.Alert;
-
-import javax.swing.*;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
@@ -16,7 +14,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class DownloadAndInstallJar {
-    private static JProgressBar progressBar;
     private static final ExecutorService executor = Executors.newSingleThreadExecutor();
 
     public static void downloadAndInstallJar(String saveDir, ProgressDisplayController controller) {
@@ -27,14 +24,20 @@ public class DownloadAndInstallJar {
                     String mavenUrl = "https://dlcdn.apache.org/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.zip";
                     String jarUrl = "https://bitbucket.org/stellar2/stellar-starter-project/downloads/Stellar-1.2.0.jar";
                     String projectUrl = "https://bitbucket.org/stellar2/stellar-starter-project/get/master.zip";
+                    String os = System.getProperty("os.name").toLowerCase();
 
-                    //Download Maven
-                    downloadFile(mavenUrl,saveDir+File.separator+"apache-maven-3.9.9.zip",0.0,0.1,controller);
-                    extractAndRenameZip(saveDir+File.separator+"apache-maven-3.9.9.zip",saveDir,"apache-maven-3.9.9",0.1,0.2,controller);
+                    if (System.getProperty("os.name").toLowerCase().contains("mac")) {
+                        //Download Maven
+                        downloadFile(mavenUrl, saveDir + File.separator + "apache-maven-3.9.9.zip", 0.0, 0.1, controller);
+                        extractAndRenameZip(saveDir + File.separator + "apache-maven-3.9.9.zip", saveDir, "apache-maven-3.9.9", 0.1, 0.2, controller);
+                        changeMavenPermissions(saveDir + File.separator + "apache-maven-3.9.9/bin/mvn");
+                    }
+
                     // Download JAR (0% to 30%)
                     String jarFilePath = saveDir + File.separator + "Stellar-1.2.0.jar";
                     downloadFile(jarUrl, jarFilePath, 0.2, 0.4, controller);
-                    changeMavenPermissions(saveDir+File.separator+"apache-maven-3.9.9/bin/mvn");
+
+
                     if(!runMavenInstall(jarFilePath, 0.4, 0.6, controller,saveDir+File.separator+"apache-maven-3.9.9/bin/mvn")){
                         showErrorPopup("Something went wrong.");
                     }
@@ -120,35 +123,60 @@ public class DownloadAndInstallJar {
         }
     }
 
-
     private static boolean runMavenInstall(String jarPath, double startProgress, double endProgress, ProgressDisplayController controller,String mavenPath) throws IOException, InterruptedException {
-        //MavenCli mavenCli = new MavenCli();
-//        String os = System.getProperty("os.name").toLowerCase();
-//        String mavenKeyword = os.contains("win") ? "mvn.cmd" : "mvn";
+        if (System.getProperty("os.name").toLowerCase().contains("mac")) {
+            // Create the ProcessBuilder directly with Maven command split into arguments
+            ProcessBuilder processBuilder = new ProcessBuilder(mavenPath, "install:install-file",
+                    "-Dfile=" + jarPath,
+                    "-DgroupId=Stellar",
+                    "-DartifactId=io.vstellar",
+                    "-Dversion=1.2.0",
+                    "-Dpackaging=jar");
 
+            //
+            // Set the working directory to user's home
 
-        // Create the ProcessBuilder directly with Maven command split into arguments
-        ProcessBuilder processBuilder = new ProcessBuilder(mavenPath, "install:install-file",
-                "-Dfile=" + jarPath,
-                "-DgroupId=Stellar",
-                "-DartifactId=io.vstellar",
-                "-Dversion=1.2.0",
-                "-Dpackaging=jar");
+            Process process = processBuilder.start();  // Start the process
 
-       // processBuilder.directory(new File(System.getProperty("user.home")));  // Set the working directory to user's home
+            // Simulate progress for Maven installation
+            for (int i = 0; i <= 100; i += 10) {
+                double progress = startProgress + (i / 100.0) * (endProgress - startProgress);
+                Platform.runLater(() -> controller.updateProgress(progress));  // Update progress in UI
+                Thread.sleep(100);  // Adjust the delay as needed for smooth progress
+            }
 
-        Process process = processBuilder.start();  // Start the process
+            process.waitFor();  // Wait for the process to complete
 
-        // Simulate progress for Maven installation
-        for (int i = 0; i <= 100; i += 10) {
-            double progress = startProgress + (i / 100.0) * (endProgress - startProgress);
-            Platform.runLater(() -> controller.updateProgress(progress));  // Update progress in UI
-            Thread.sleep(100);  // Adjust the delay as needed for smooth progress
+            return process.exitValue() == 0;  // Return true if Maven install was successful
         }
 
-        process.waitFor();  // Wait for the process to complete
+        else{
+            String os = System.getProperty("os.name").toLowerCase();
+            String mavenKeyword = os.contains("win") ? "mvn.cmd" : "mvn";
 
-        return process.exitValue() == 0;  // Return true if Maven install was successful
+
+            // Create the ProcessBuilder directly with Maven command split into arguments
+            ProcessBuilder processBuilder = new ProcessBuilder(mavenKeyword, "install:install-file",
+                    "-Dfile=" + jarPath,
+                    "-DgroupId=Stellar",
+                    "-DartifactId=io.vstellar",
+                    "-Dversion=1.2.0",
+                    "-Dpackaging=jar");
+
+            processBuilder.directory(new File(System.getProperty("user.home")));  // Set the working directory to user's home
+
+            Process process = processBuilder.start();  // Start the process
+
+            // Simulate progress for Maven installation
+            for (int i = 0; i <= 100; i += 10) {
+                double progress = startProgress + (i / 100.0) * (endProgress - startProgress);
+                Platform.runLater(() -> controller.updateProgress(progress));  // Update progress in UI
+                Thread.sleep(100);  // Adjust the delay as needed for smooth progress
+            }
+
+            process.waitFor();  // Wait for the process to complete
+            return process.exitValue() == 0;
+        }
     }
 
 

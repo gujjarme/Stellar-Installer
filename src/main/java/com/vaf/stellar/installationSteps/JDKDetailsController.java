@@ -4,9 +4,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.web.WebEngine;
@@ -56,7 +54,7 @@ public class JDKDetailsController {
 
     private void openWebViewWindow() {
         this.isPlaying = Boolean.TRUE;
-        String videoUrl = OSUtils.getVideoURL();
+        String videoUrl = OSUtils.getJdkURL();
         webView.setVisible(true);
         infoImageView.setVisible(false);
         WebEngine webEngine = webView.getEngine();
@@ -99,8 +97,8 @@ public class JDKDetailsController {
             currentScreen();
             return;
         } else {
-            stopVideo(); // Check and stop the video if it's playing
-            openMavenInstallationScreen(); // Proceed to the next screen
+            stopVideo();
+            openMavenInstallationScreen();
         }
     }
 
@@ -115,6 +113,7 @@ public class JDKDetailsController {
             Stage stage = (Stage) arrowImageView.getScene().getWindow();
             stage.setScene(scene);
         } catch (IOException e) {
+            showErrorPopup("Something went wrong.");
             e.printStackTrace();
         }
     }
@@ -144,10 +143,10 @@ public class JDKDetailsController {
 
     public void showErrorPopup(String errorMessage) {
         Platform.runLater(() -> {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
+            Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Error");
-            alert.setHeaderText("An Error Occurred");
-            alert.setContentText(errorMessage);
+            alert.setHeaderText(errorMessage);
+           // alert.setContentText(errorMessage);
             alert.showAndWait();
         });
     }
@@ -175,6 +174,7 @@ public class JDKDetailsController {
             String line = reader.readLine();
             return line != null && line.contains("Java");
         } catch (IOException e) {
+            showErrorPopup("Something went wrong.");
             e.printStackTrace();
             return false;
         }

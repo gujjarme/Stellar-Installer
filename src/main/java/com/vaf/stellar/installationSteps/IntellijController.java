@@ -1,10 +1,12 @@
 package com.vaf.stellar.installationSteps;
 
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.image.ImageView;
@@ -51,7 +53,7 @@ public class IntellijController {
     }
 
     private void openWebViewWindow() {
-        String videoUrl = OSUtils.getVideoURL();
+        String videoUrl = OSUtils.getIntellijVideo();
         webView.setVisible(Boolean.TRUE);
         infoImageView.setVisible(Boolean.FALSE);
         WebEngine webEngine = webView.getEngine();
@@ -77,10 +79,11 @@ public class IntellijController {
                 try {
                     Desktop.getDesktop().browse(new URI(url));
                 } catch (IOException | URISyntaxException e) {
+                    showErrorPopup("Couldn't launch default browser.");
                     e.printStackTrace();
                 }
             } else {
-                System.out.println("Opening a browser is not supported on this system.");
+
             }
         }).start(); // Start a new thread to handle the Desktop API call
     }
@@ -95,6 +98,7 @@ public class IntellijController {
             Stage stage = (Stage) arrowImageView.getScene().getWindow();
             stage.setScene(scene);
         } catch (IOException e) {
+            showErrorPopup("Something went wrong.");
             e.printStackTrace();
         }
     }
@@ -102,11 +106,12 @@ public class IntellijController {
     private void openJDKDownloadPage() {
         try {
 
-            String url = "https://www.jetbrains.com/idea/";
+            String url = "https://www.jetbrains.com/idea/download/?section=mac";
             if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
                 Desktop.getDesktop().browse(new URI(url));
             }
         } catch (IOException | URISyntaxException e) {
+            showErrorPopup("Something went wrong.");
             e.printStackTrace();
         }
     }
@@ -124,6 +129,15 @@ public class IntellijController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    public void showErrorPopup(String errorMessage) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Error");
+            alert.setHeaderText(errorMessage);
+            // alert.setContentText(errorMessage);
+            alert.showAndWait();
+        });
     }
 
 }

@@ -1,10 +1,12 @@
 package com.vaf.stellar.installationSteps;
 
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.image.ImageView;
@@ -14,7 +16,9 @@ import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
 import java.awt.Desktop;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -55,7 +59,7 @@ public class MavenController {
     private void openWebViewWindow() {
 
         this.isPlaying=Boolean.TRUE;
-        String videoUrl = OSUtils.getVideoURL();
+        String videoUrl = OSUtils.getMavenURL();
         webView.setVisible(true);
         infoImageView.setVisible(false);
         WebEngine webEngine = webView.getEngine();
@@ -103,7 +107,7 @@ public class MavenController {
     private void openJDKDownloadPage() {
         try {
             // Define the Maven download URL
-            String url = "https://maven.apache.org/guides/getting-started/windows-prerequisites.html";
+            String url = "https://maven.apache.org/download.cgi";
 
             // Open the URL in the default system browser
             if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
@@ -117,6 +121,12 @@ public class MavenController {
     @FXML
     private void openIntellijInstallationScreen() {
         try {
+            String os = System.getProperty("os.name").toLowerCase();
+            if(os.toLowerCase().contains("win")){
+                if(!isMavenInstalled()){
+
+                }
+            }
             if (isPlaying){
                 webView.getEngine().executeScript("document.querySelector('video').pause();");
             }
@@ -127,6 +137,26 @@ public class MavenController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    private boolean isMavenInstalled() {
+        try {
+            Process process = Runtime.getRuntime().exec("mvn -version");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+            String line = reader.readLine();
+            return line != null && line.toLowerCase().contains("maven");
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public void showErrorPopup(String errorMessage) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error");
+            alert.setHeaderText(errorMessage);
+            //alert.setContentText(errorMessage);
+            alert.showAndWait();
+        });
     }
 
 }
