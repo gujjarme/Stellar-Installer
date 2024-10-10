@@ -24,7 +24,6 @@ public class DownloadAndInstallJar {
                     String mavenUrl = "https://dlcdn.apache.org/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.zip";
                     String jarUrl = "https://bitbucket.org/stellar2/stellar-starter-project/downloads/Stellar-1.2.0.jar";
                     String projectUrl = "https://bitbucket.org/stellar2/stellar-starter-project/get/master.zip";
-                    String os = System.getProperty("os.name").toLowerCase();
 
                     if (System.getProperty("os.name").toLowerCase().contains("mac")) {
                         //Download Maven

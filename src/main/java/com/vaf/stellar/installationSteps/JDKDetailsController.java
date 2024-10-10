@@ -92,12 +92,11 @@ public class JDKDetailsController {
     }
 
     private void proceedToMavenInstallation() {
-        if (isJDKInstalled()) {
-            showErrorPopup("JDK is not installed. Please install JDK before proceeding.");
+        if (!isJDKInstalled()) {
+            showErrorPopup("Please set up JDK in your system to proceed.");
             currentScreen();
-            return;
         } else {
-            stopVideo();
+            //stopVideo();
             openMavenInstallationScreen();
         }
     }
@@ -132,7 +131,7 @@ public class JDKDetailsController {
 
     private void openJDKDownloadPage() {
         try {
-            String url = "https://www.oracle.com/java/technologies/downloads/#java11-mac";
+            String url = "https://www.oracle.com/pk/java/technologies/downloads/";
             if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
                 Desktop.getDesktop().browse(new URI(url));
             }
@@ -169,14 +168,32 @@ public class JDKDetailsController {
 
     private boolean isJDKInstalled() {
         try {
-            Process process = Runtime.getRuntime().exec("javac -version");
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-            String line = reader.readLine();
-            return line != null && line.contains("Java");
-        } catch (IOException e) {
+            // Use ProcessBuilder to execute the 'javac -version' command
+            ProcessBuilder processBuilder = new ProcessBuilder("cmd.exe", "/c", "javac -version");
+            processBuilder.redirectErrorStream(true);  // Merge error stream with the output stream
+            Process process = processBuilder.start();
+
+            // Read the output of the command
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+            StringBuilder output = new StringBuilder();
+            while ((line = reader.readLine()) != null) {
+                output.append(line).append(System.lineSeparator());
+            }
+
+            // Wait for the process to complete
+            int exitCode = process.waitFor();
+            if (exitCode == 0) {
+                // Check if the output contains "javac" or "Java" to verify JDK presence
+                return output.toString().toLowerCase().contains("javac");
+            } else {
+                return false;
+            }
+        } catch (IOException | InterruptedException e) {
             showErrorPopup("Something went wrong.");
             e.printStackTrace();
             return false;
         }
     }
+
 }

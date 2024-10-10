@@ -115,6 +115,7 @@ public class MavenController {
             }
         } catch (IOException | URISyntaxException e) {
             // Handle any exceptions that occur
+            ErrorUtils.showInfoPopup("Could not open default browser.");
             e.printStackTrace();
         }
     }
@@ -124,7 +125,8 @@ public class MavenController {
             String os = System.getProperty("os.name").toLowerCase();
             if(os.toLowerCase().contains("win")){
                 if(!isMavenInstalled()){
-
+                    ErrorUtils.showErrorPopup("Please set up Maven in your system to proceed.");
+                    return;
                 }
             }
             if (isPlaying){
@@ -140,23 +142,32 @@ public class MavenController {
     }
     private boolean isMavenInstalled() {
         try {
-            Process process = Runtime.getRuntime().exec("mvn -version");
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-            String line = reader.readLine();
-            return line != null && line.toLowerCase().contains("maven");
-        } catch (IOException e) {
+            // Use ProcessBuilder to execute the 'mvn -version' command
+            ProcessBuilder processBuilder = new ProcessBuilder("cmd.exe", "/c", "mvn -version");
+            processBuilder.redirectErrorStream(true);  // Merge error stream with the output stream
+            Process process = processBuilder.start();
+
+            // Read the output of the command
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+            StringBuilder output = new StringBuilder();
+            while ((line = reader.readLine()) != null) {
+                output.append(line).append(System.lineSeparator());
+            }
+
+            // Wait for the process to complete
+            int exitCode = process.waitFor();
+            if (exitCode == 0) {
+                // Check if the output contains "Maven"
+                return output.toString().toLowerCase().contains("maven");
+            } else {
+                return false;
+            }
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
             return false;
         }
     }
-    public void showErrorPopup(String errorMessage) {
-        Platform.runLater(() -> {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Error");
-            alert.setHeaderText(errorMessage);
-            //alert.setContentText(errorMessage);
-            alert.showAndWait();
-        });
-    }
+
 
 }

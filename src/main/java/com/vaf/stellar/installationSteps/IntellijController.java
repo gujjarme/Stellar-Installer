@@ -106,7 +106,7 @@ public class IntellijController {
     private void openJDKDownloadPage() {
         try {
 
-            String url = "https://www.jetbrains.com/idea/download/?section=mac";
+            String url = OSUtils.getIntellijDocURL();
             if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
                 Desktop.getDesktop().browse(new URI(url));
             }

@@ -27,6 +27,7 @@ public class GetStartedController {
             stage.setScene(GetStarted.globalScene);
 
         } catch (IOException e) {
+
             e.printStackTrace();
         }
     }
