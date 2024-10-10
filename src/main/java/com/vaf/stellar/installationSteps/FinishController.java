@@ -35,6 +35,7 @@ public class FinishController {
 
     @FXML
     private ImageView arrowImageView;
+    private Boolean isPlaying;
 
 
     @FXML
@@ -43,26 +44,48 @@ public class FinishController {
         infoImageView.setOnMouseClicked(event -> openWebViewWindow());
         arrowImageView.setOnMouseClicked(event -> goToPreviousScreen());
         continueButton.setOnAction(event -> closeWindow());
-
+        isPlaying= Boolean.FALSE;
 
 
 
     }
 
     private void openWebViewWindow() {
-        String videoUrl = "https://www.youtube.com/embed/P_tAU3GM9XI?autoplay=1";
-        String containerId = "movie_player";
+        String videoUrl = OSUtils.getFinishVideoURL();
         webView.setVisible(Boolean.TRUE);
         infoImageView.setVisible(Boolean.FALSE);
         WebEngine webEngine = webView.getEngine();
         webEngine.setJavaScriptEnabled(true);
-
+        this.isPlaying=Boolean.TRUE;
         webEngine.load(videoUrl);
+        webEngine.locationProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.contains("youtube.com")) {
+                System.out.println("YouTube logo clicked! Preventing navigation.");
+                webView.getEngine().executeScript("document.querySelector('video').pause();");
+                webEngine.load(videoUrl); // Cancel navigation back to the original pagen
+                openInSystemBrowserAsync(videoUrl);
+
+            }
+        });
 
 
 
     }
 
+    private void openInSystemBrowserAsync(String url) {
+        new Thread(() -> {
+            if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+                try {
+                    Desktop.getDesktop().browse(new URI(url));
+                } catch (IOException | URISyntaxException e) {
+                    ErrorUtils.showInfoPopup("Couldn't launch default browser.");
+                    e.printStackTrace();
+                }
+            } else {
+
+            }
+        }).start(); // Start a new thread to handle the Desktop API call
+    }
     private void goToPreviousScreen() {
         try {
             // Load the get-started.fxml file

@@ -190,7 +190,7 @@ public class JDKDetailsController {
                 return false;
             }
         } catch (IOException | InterruptedException e) {
-            showErrorPopup("Something went wrong.");
+            //showErrorPopup("Something went wrong.");
             e.printStackTrace();
             return false;
         }

@@ -125,7 +125,7 @@ public class MavenController {
             String os = System.getProperty("os.name").toLowerCase();
             if(os.toLowerCase().contains("win")){
                 if(!isMavenInstalled()){
-                    ErrorUtils.showErrorPopup("Please set up Maven in your system to proceed.");
+                    ErrorUtils.showInfoPopup("Please set up Maven in your system to proceed.");
                     return;
                 }
             }

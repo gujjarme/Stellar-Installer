@@ -24,6 +24,14 @@ public class OSUtils {
             return "https://www.youtube.com/embed/g-ixjFtKPWk?autoplay=1&controls=1";
         }
     }
+
+    public static String getFinishVideoURL() {
+        if (os.contains("win")) {
+            return "https://www.youtube.com/embed/Ddb81dvT7Wc?autoplay=1&controls=1";
+        } else{
+            return "https://www.youtube.com/embed/Ddb81dvT7Wc?autoplay=1&controls=1";
+        }
+    }
     public static String getIntellijDocURL() {
         if (os.contains("win")) {
             return "https://www.jetbrains.com/idea/download/?section=windows";
