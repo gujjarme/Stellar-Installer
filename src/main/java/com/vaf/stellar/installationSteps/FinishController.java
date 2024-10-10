@@ -45,6 +45,7 @@ public class FinishController {
         arrowImageView.setOnMouseClicked(event -> goToPreviousScreen());
         continueButton.setOnAction(event -> closeWindow());
         isPlaying= Boolean.FALSE;
+        openWebViewWindow();
 
 
 
@@ -89,6 +90,9 @@ public class FinishController {
     private void goToPreviousScreen() {
         try {
             // Load the get-started.fxml file
+            if (isPlaying) {
+                webView.getEngine().executeScript("document.querySelector('video').pause();");
+            }
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/vaf/stellar/views/stellar.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
             Stage stage = (Stage) arrowImageView.getScene().getWindow();
@@ -100,6 +104,10 @@ public class FinishController {
 
     private void closeWindow() {
 // Close the current window
+
+        if (isPlaying) {
+            webView.getEngine().executeScript("document.querySelector('video').pause();");
+        }
         Stage stage = (Stage) continueButton.getScene().getWindow();
         stage.close();
     }

@@ -36,14 +36,15 @@
                     AnchorPane.leftAnchor="50" AnchorPane.topAnchor="150" AnchorPane.bottomAnchor="150" AnchorPane.rightAnchor="400">
 
             <!-- VBox to center content vertically and horizontally -->
-            <VBox alignment="CENTER" spacing="10" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0">
+            <VBox alignment="CENTER" spacing="5" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0">
                 <Label fx:id="percentageLabel" text="0%" style="-fx-font-size: 14px; -fx-text-fill: white;" />
                 <ProgressBar fx:id="downloadProgressBar" prefWidth="300" prefHeight="15" style="-fx-accent: purple;" />
-                <Label fx:id="statusLabel" text="Enter the license key we've sent you via email."
-                       style="-fx-font-size: 12px; -fx-text-fill: white; -fx-alignment: center;" wrapText="true" maxWidth="280" alignment="CENTER" />
-                <Label fx:id="statusLabel2" text="Watch the next video for step-by-step instructions."
-                       style="-fx-font-size: 12px; -fx-text-fill: white; -fx-alignment: center;" wrapText="true" maxWidth="280" alignment="CENTER" />
-
+                <VBox fx:id = "statusLabelGroup" spacing="10" alignment="CENTER" >
+                    <Label fx:id="statusLabel" text="Enter the license key we've sent you via email after installation."
+                           style="-fx-font-size: 12px; -fx-text-fill: white; -fx-alignment: center;" wrapText="true" maxWidth="280" alignment="CENTER" />
+                    <Label fx:id="statusLabel2" text="Watch the next video for step-by-step instructions."
+                           style="-fx-font-size: 12px; -fx-text-fill: white; -fx-alignment: center;" wrapText="true" maxWidth="280" alignment="CENTER" />
+                </VBox>
                 <Button fx:id="continueButton" layoutX="149.0" layoutY="99.0" onAction="#FinishScreen" disable="true" prefHeight="20.0" prefWidth="80.0" style="-fx-background-color: #00FFF0; -fx-text-fill: black;" text="Continue" />
             </VBox>
         </AnchorPane>

@@ -25,7 +25,7 @@
                 <Hyperlink fx:id="downloadJDKLink" layoutX="86.0" layoutY="251.0" style="-fx-text-fill: cyan; -fx-font-size: 12px; -fx-underline: true;" text="Download JDK" />
 
                 <AnchorPane fx:id="webViewContainer" prefHeight="121.0" prefWidth="292.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
-                    <ImageView fx:id="infoImageView" fitHeight="121.0" fitWidth="292.0" layoutX="51.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true">
+                    <ImageView fx:id="infoImageView" fitHeight="121.0" fitWidth="292.0" layoutX="51.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true" visible="false">
                         <image>
                             <Image url="@../assets/info.png" />
                         </image>

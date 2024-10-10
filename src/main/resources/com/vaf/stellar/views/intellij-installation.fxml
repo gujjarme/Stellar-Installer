@@ -31,7 +31,7 @@
                 <!-- Image for clicking -->
 
                 <AnchorPane fx:id="webViewContainer" prefHeight="121.0" prefWidth="292.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
-                    <ImageView fx:id="infoImageView" fitHeight="121.0" fitWidth="292.0" layoutX="50.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
+                    <ImageView fx:id="infoImageView" fitHeight="121.0" fitWidth="292.0" layoutX="50.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true" visible="false">
                         <image>
                             <Image url="@../assets/info.png" />
                         </image>

@@ -50,6 +50,7 @@ public class IntellijController {
         arrowImageView.setOnMouseClicked(event -> goToPreviousScreen());
         downloadJDKLink.setOnAction(event -> openJDKDownloadPage());
         isPlaying = Boolean.FALSE;
+        openWebViewWindow();
     }
 
     private void openWebViewWindow() {

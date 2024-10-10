@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -22,6 +23,8 @@ public class ProgressDisplayController {
     private Label statusLabel;
     @FXML
     private Button continueButton;
+    @FXML
+    private VBox statusLabelGroup;
     @FXML
     private ImageView arrowImageView;// Add a reference to the status label
     @FXML
@@ -39,8 +42,10 @@ public class ProgressDisplayController {
 
             // Change the status label when progress reaches 100%
             if (progress >= 1.0) {
+                //statusLabelGroup.setVisible(true);
                 percentageLabel.setText("Download Complete");
                 continueButton.setDisable(false);
+
             }
         });
     }

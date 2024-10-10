@@ -54,6 +54,7 @@ public class MavenController {
         // Handle Hyperlink click to open the JDK download page
         downloadJDKLink.setOnAction(event -> openJDKDownloadPage());
         isPlaying = Boolean.FALSE;
+        openWebViewWindow();
     }
 
     private void openWebViewWindow() {

@@ -49,6 +49,7 @@ public class JDKDetailsController {
         arrowImageView.setOnMouseClicked(event -> goToPreviousScreen());
         downloadJDKLink.setOnAction(event -> openJDKDownloadPage());
         continueButton.setOnAction(event -> proceedToMavenInstallation());
+        openWebViewWindow();
         isPlaying = false;
     }
 
@@ -169,7 +170,7 @@ public class JDKDetailsController {
     private boolean isJDKInstalled() {
         try {
             // Use ProcessBuilder to execute the 'javac -version' command
-            ProcessBuilder processBuilder = new ProcessBuilder("cmd.exe", "/c", "javac -version");
+            ProcessBuilder processBuilder = new ProcessBuilder("cmd.exe", "/c", "java -version");
             processBuilder.redirectErrorStream(true);  // Merge error stream with the output stream
             Process process = processBuilder.start();
 
@@ -185,7 +186,7 @@ public class JDKDetailsController {
             int exitCode = process.waitFor();
             if (exitCode == 0) {
                 // Check if the output contains "javac" or "Java" to verify JDK presence
-                return output.toString().toLowerCase().contains("javac");
+                return output.toString().toLowerCase().contains("version");
             } else {
                 return false;
             }
