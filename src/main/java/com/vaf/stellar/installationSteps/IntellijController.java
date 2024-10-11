@@ -80,7 +80,7 @@ public class IntellijController {
                 try {
                     Desktop.getDesktop().browse(new URI(url));
                 } catch (IOException | URISyntaxException e) {
-                    showErrorPopup("Couldn't launch default browser.");
+                    ErrorUtils.showInfoPopup("Couldn't launch default browser.");
                     e.printStackTrace();
                 }
             } else {
@@ -99,7 +99,7 @@ public class IntellijController {
             Stage stage = (Stage) arrowImageView.getScene().getWindow();
             stage.setScene(scene);
         } catch (IOException e) {
-            showErrorPopup("Something went wrong.");
+            ErrorUtils.showInfoPopup("Something went wrong.");
             e.printStackTrace();
         }
     }
@@ -112,7 +112,7 @@ public class IntellijController {
                 Desktop.getDesktop().browse(new URI(url));
             }
         } catch (IOException | URISyntaxException e) {
-            showErrorPopup("Something went wrong.");
+            ErrorUtils.showInfoPopup("Something went wrong.");
             e.printStackTrace();
         }
     }
