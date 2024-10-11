@@ -93,7 +93,7 @@ public class JDKDetailsController {
 
     private void proceedToMavenInstallation() {
         if (!isJDKInstalled()) {
-            showErrorPopup("Please set up JDK in your system to proceed.");
+            ErrorUtils.showInfoPopup("Please set up JDK in your system to proceed.");
             currentScreen();
         } else {
             stopVideo();
@@ -112,7 +112,7 @@ public class JDKDetailsController {
             Stage stage = (Stage) arrowImageView.getScene().getWindow();
             stage.setScene(scene);
         } catch (IOException e) {
-            showErrorPopup("Something went wrong.");
+            ErrorUtils.showInfoPopup("Something went wrong.");
             e.printStackTrace();
         }
     }
@@ -168,8 +168,18 @@ public class JDKDetailsController {
 
     private boolean isJDKInstalled() {
         try {
-            // Use ProcessBuilder to execute the 'javac -version' command
-            ProcessBuilder processBuilder = new ProcessBuilder("cmd.exe", "/c", "java -version");
+            // Determine the operating system
+            String osName = System.getProperty("os.name").toLowerCase();
+
+            // Use the appropriate command based on the OS
+            ProcessBuilder processBuilder;
+            if (osName.contains("win")) {
+                // Windows environment
+                processBuilder = new ProcessBuilder("cmd.exe", "/c", "java -version");
+            } else {
+                processBuilder = new ProcessBuilder("java", "-version");
+            }
+
             processBuilder.redirectErrorStream(true);  // Merge error stream with the output stream
             Process process = processBuilder.start();
 
@@ -190,7 +200,7 @@ public class JDKDetailsController {
                 return false;
             }
         } catch (IOException | InterruptedException e) {
-            //showErrorPopup("Something went wrong.");
+            // Show error or handle exception
             e.printStackTrace();
             return false;
         }
