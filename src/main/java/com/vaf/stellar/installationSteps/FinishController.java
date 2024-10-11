@@ -44,7 +44,7 @@ public class FinishController {
         infoImageView.setOnMouseClicked(event -> openWebViewWindow());
         arrowImageView.setOnMouseClicked(event -> goToPreviousScreen());
         continueButton.setOnAction(event -> closeWindow());
-        isPlaying= Boolean.FALSE;
+        //isPlaying= Boolean.FALSE;
         openWebViewWindow();
 
 

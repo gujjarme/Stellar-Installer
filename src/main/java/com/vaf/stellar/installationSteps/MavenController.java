@@ -53,7 +53,7 @@ public class MavenController {
         arrowImageView.setOnMouseClicked(event -> goToPreviousScreen());
         // Handle Hyperlink click to open the JDK download page
         downloadJDKLink.setOnAction(event -> openJDKDownloadPage());
-        isPlaying = Boolean.FALSE;
+        //isPlaying = Boolean.FALSE;
         openWebViewWindow();
     }
 
@@ -122,6 +122,7 @@ public class MavenController {
     }
     @FXML
     private void openIntellijInstallationScreen() {
+
         try {
             String os = System.getProperty("os.name").toLowerCase();
             if(os.toLowerCase().contains("win")){

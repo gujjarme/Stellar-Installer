@@ -117,7 +117,7 @@ public class DownloadAndInstallJar {
             outputStream.close();
             inputStream.close();
         } catch (Exception e) {
-            showErrorPopup("Something went wrong.");
+            ErrorUtils.showInfoPopup("Something went wrong.");
             e.printStackTrace();
         }
     }
@@ -240,7 +240,7 @@ public class DownloadAndInstallJar {
             File zipFile = new File(zipFilePath);
             zipFile.delete();
         } catch (Exception e) {
-            showErrorPopup("Something went wrong.");
+            ErrorUtils.showInfoPopup("Something went wrong.");
             e.printStackTrace();
         }
     }

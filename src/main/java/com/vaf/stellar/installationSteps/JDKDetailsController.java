@@ -41,7 +41,7 @@ public class JDKDetailsController {
     private ImageView arrowImageView;
     private Boolean isPlaying;
 
-    private boolean isVideoPlaying = false; // Flag to track if the video is playing
+//    private boolean isVideoPlaying = false; // Flag to track if the video is playing
 
     @FXML
     public void initialize() {
@@ -50,7 +50,6 @@ public class JDKDetailsController {
         downloadJDKLink.setOnAction(event -> openJDKDownloadPage());
         continueButton.setOnAction(event -> proceedToMavenInstallation());
         openWebViewWindow();
-        isPlaying = false;
     }
 
     private void openWebViewWindow() {
@@ -74,8 +73,8 @@ public class JDKDetailsController {
         new Thread(() -> {
             if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
                 try {
-                    Desktop.getDesktop().browse(new URI(url));
-                } catch (IOException | URISyntaxException e) {
+                    Desktop.getDesktop().browse(URI.create(url));
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             } else {
@@ -85,10 +84,10 @@ public class JDKDetailsController {
     }
 
     private void stopVideo() {
-        if (isVideoPlaying) { // Check if video is playing before attempting to pause
+        if (isPlaying) { // Check if video is playing before attempting to pause
             WebEngine webEngine = webView.getEngine();
             webEngine.executeScript("document.querySelector('video').pause();"); // Pause the video
-            isVideoPlaying = false; // Update flag to false as video is paused
+            isPlaying = false; // Update flag to false as video is paused
         }
     }
 
@@ -97,7 +96,7 @@ public class JDKDetailsController {
             showErrorPopup("Please set up JDK in your system to proceed.");
             currentScreen();
         } else {
-            //stopVideo();
+            stopVideo();
             openMavenInstallationScreen();
         }
     }
