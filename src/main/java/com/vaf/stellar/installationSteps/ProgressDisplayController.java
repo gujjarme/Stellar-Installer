@@ -24,7 +24,10 @@ public class ProgressDisplayController {
     @FXML
     private Button continueButton;
     @FXML
+    private Button resumeButton;
+    @FXML
     private VBox statusLabelGroup;
+
     @FXML
     private ImageView arrowImageView;// Add a reference to the status label
     @FXML
@@ -44,10 +47,17 @@ public class ProgressDisplayController {
             if (progress >= 1.0) {
                 //statusLabelGroup.setVisible(true);
                 percentageLabel.setText("Download Complete");
-                continueButton.setDisable(false);
-
+                //continueButton.setDisable(Boolean.FALSE);
             }
         });
+    }
+
+    public void enableResumeButton(){
+        try{
+            resumeButton.setVisible(Boolean.TRUE);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
     private void goToPreviousScreen() {
         try {

@@ -5,16 +5,31 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.control.Alert;
 import java.io.*;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.*;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import okhttp3.Headers;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
+
+
 public class DownloadAndInstallJar {
     private static final ExecutorService executor = Executors.newSingleThreadExecutor();
+    private static final OkHttpClient client = new OkHttpClient().newBuilder()
+            .connectTimeout(10,TimeUnit.SECONDS)
+            .readTimeout(10, TimeUnit.SECONDS)
+            .build();
+
 
     public static void downloadAndInstallJar(String saveDir, ProgressDisplayController controller) {
         Task<Void> task = new Task<>() {
@@ -38,7 +53,7 @@ public class DownloadAndInstallJar {
 
 
                     if(!runMavenInstall(jarFilePath, 0.4, 0.6, controller,saveDir+File.separator+"apache-maven-3.9.9/bin/mvn")){
-                        ErrorUtils.showInfoPopup("Something went wrong.");
+                        ErrorUtils.showInfoPopup("Something went wrong while Installing the Jar.");
                     }
 
                     // Download project zip (60% to 80%)
@@ -58,13 +73,55 @@ public class DownloadAndInstallJar {
             }
         };
 
-        // Bind the task's progress to the controller's progress update
         task.progressProperty().addListener((obs, oldProgress, newProgress) ->
                 Platform.runLater(() -> controller.updateProgress(newProgress.doubleValue()))
         );
 
         executor.execute(task);
+    }
+    public static void downloadFile(String fileURL, String saveFilePath, double startProgress, double endProgress, ProgressDisplayController controller) {
+        Request request = new Request.Builder()
+                .url(fileURL)
+                .build();
 
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                throw new RuntimeException("Failed to download file: HTTP " + response.code());
+            }
+
+            InputStream inputStream = response.body().byteStream();
+            FileOutputStream outputStream = new FileOutputStream(saveFilePath);
+
+            byte[] buffer = new byte[4096];
+            int totalRead = 0;
+            int bytesRead;
+            int fileSize = (int) response.body().contentLength();
+
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+                totalRead += bytesRead;
+                double progress = startProgress + (double) totalRead / fileSize * (endProgress - startProgress);
+
+                Platform.runLater(() -> controller.updateProgress(progress));
+
+            }
+
+            outputStream.close();
+            inputStream.close();
+        }catch (SocketTimeoutException socketTimeoutException){
+            ErrorUtils.showInfoPopup("Network Error");
+            controller.enableResumeButton();
+            throw new RuntimeException();
+
+        }
+        catch (Exception e) {
+//            Platform.runLater(() -> {
+//
+//
+//            });
+            ErrorUtils.showInfoPopup("Something went wrong.");
+            e.printStackTrace();
+        }
     }
     public static boolean changeMavenPermissions(String mavenPath) {
         // Command to change the permissions
@@ -93,34 +150,35 @@ public class DownloadAndInstallJar {
             return false; // Exception occurred
         }
     }
-    private static void downloadFile(String fileURL, String saveFilePath, double startProgress, double endProgress, ProgressDisplayController controller) throws InterruptedException {
-        try {
-            URL url = new URL(fileURL);
-            URLConnection connection = url.openConnection();
-            InputStream inputStream = connection.getInputStream();
-            FileOutputStream outputStream = new FileOutputStream(saveFilePath);
-
-            byte[] buffer = new byte[4096];
-            int totalRead = 0;
-            int bytesRead;
-            int fileSize = connection.getContentLength();
-
-            while ((bytesRead = inputStream.read(buffer)) != -1) {
-                outputStream.write(buffer, 0, bytesRead);
-                totalRead += bytesRead;
-                double progress = startProgress + (double) totalRead / fileSize * (endProgress - startProgress);
-
-                // Smooth progress updates
-                Platform.runLater(() -> controller.updateProgress(progress));
-                Thread.sleep(20); // Adjust the delay for smoother progress effect
-            }
-            outputStream.close();
-            inputStream.close();
-        } catch (Exception e) {
-            ErrorUtils.showInfoPopup("Something went wrong.");
-            e.printStackTrace();
-        }
-    }
+//    private static void downloadFile(String fileURL, String saveFilePath, double startProgress, double endProgress, ProgressDisplayController controller) throws InterruptedException {
+//        try {
+//            URL url = new URL(fileURL);
+//            URLConnection connection = url.openConnection();
+//            InputStream inputStream = connection.getInputStream();
+//            FileOutputStream outputStream = new FileOutputStream(saveFilePath);
+//
+//            byte[] buffer = new byte[4096];
+//            int totalRead = 0;
+//            int bytesRead;
+//            int fileSize = connection.getContentLength();
+//
+//            while ((bytesRead = inputStream.read(buffer)) != -1) {
+//                outputStream.write(buffer, 0, bytesRead);
+//                totalRead += bytesRead;
+//                double progress = startProgress + (double) totalRead / fileSize * (endProgress - startProgress);
+//
+//                // Smooth progress updates
+//                Platform.runLater(() -> controller.updateProgress(progress));
+//                //Thread.sleep(20); // Adjust the delay for smoother progress effect
+//            }
+//            outputStream.close();
+//            inputStream.close();
+//        } catch (Exception e) {
+//            ErrorUtils.showInfoPopup("Something went wrong.");
+//            controller.enableResumeButton();
+//            e.printStackTrace();
+//        }
+//    }
 
     private static boolean runMavenInstall(String jarPath, double startProgress, double endProgress, ProgressDisplayController controller,String mavenPath) throws IOException, InterruptedException {
         if (System.getProperty("os.name").toLowerCase().contains("mac")) {
@@ -240,7 +298,7 @@ public class DownloadAndInstallJar {
             File zipFile = new File(zipFilePath);
             zipFile.delete();
         } catch (Exception e) {
-            ErrorUtils.showInfoPopup("Something went wrong.");
+            ErrorUtils.showInfoPopup("Something went wrong while Extracting.");
             e.printStackTrace();
         }
     }

@@ -15,6 +15,8 @@ public class StellarDownloadInfoController {
 
     @FXML
     private Button continueButton;
+    @FXML
+    private Button resumeButton;
 
     @FXML
     private ImageView arrowImageView;
@@ -50,6 +52,10 @@ public class StellarDownloadInfoController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    @FXML
+    private void resumeDownload(){
+
     }
 
 }
