@@ -5,6 +5,8 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.control.Alert;
 import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.*;
@@ -96,7 +98,17 @@ public class DownloadAndInstallJar {
     private static void downloadFile(String fileURL, String saveFilePath, double startProgress, double endProgress, ProgressDisplayController controller) throws InterruptedException {
         try {
             URL url = new URL(fileURL);
-            URLConnection connection = url.openConnection();
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setConnectTimeout(5000);  // Connection timeout
+            connection.setReadTimeout(5000);     // Read timeout
+            connection.setRequestMethod("GET");
+
+            int responseCode = connection.getResponseCode();
+            if (responseCode != HttpURLConnection.HTTP_OK) {
+                Platform.runLater(() -> ErrorUtils.showInfoPopup("The connection timed out. Please try again."));
+                throw new IOException("Failed to connect. HTTP response code: " + responseCode);
+            }
+
             InputStream inputStream = connection.getInputStream();
             FileOutputStream outputStream = new FileOutputStream(saveFilePath);
 
@@ -114,13 +126,18 @@ public class DownloadAndInstallJar {
                 Platform.runLater(() -> controller.updateProgress(progress));
                 Thread.sleep(20); // Adjust the delay for smoother progress effect
             }
+
             outputStream.close();
             inputStream.close();
-        } catch (Exception e) {
+        } catch (SocketTimeoutException e) {
+            Platform.runLater(() -> ErrorUtils.showInfoPopup("The connection timed out. Please try again."));
+            throw new InterruptedException();
+        } catch (IOException e) {
             ErrorUtils.showInfoPopup("Something went wrong.");
             e.printStackTrace();
         }
     }
+
 
     private static boolean runMavenInstall(String jarPath, double startProgress, double endProgress, ProgressDisplayController controller,String mavenPath) throws IOException, InterruptedException {
         if (System.getProperty("os.name").toLowerCase().contains("mac")) {
