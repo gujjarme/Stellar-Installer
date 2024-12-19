@@ -93,7 +93,7 @@ public class JDKDetailsController {
 
     private void proceedToMavenInstallation() {
         if (!isJDKInstalled()) {
-            showErrorPopup("Please set up JDK in your system to proceed.");
+            ErrorUtils.showInfoPopup("Please set up JDK in your system to proceed.");
             currentScreen();
             stopVideo();
         } else {
@@ -113,7 +113,7 @@ public class JDKDetailsController {
             Stage stage = (Stage) arrowImageView.getScene().getWindow();
             stage.setScene(scene);
         } catch (IOException e) {
-            showErrorPopup("Something went wrong.");
+            ErrorUtils.showInfoPopup("Something went wrong.");
             e.printStackTrace();
         }
     }
@@ -178,7 +178,6 @@ public class JDKDetailsController {
                 // Windows environment
                 processBuilder = new ProcessBuilder("cmd.exe", "/c", "java -version");
             } else {
-                // macOS or Linux environment
                 processBuilder = new ProcessBuilder("java", "-version");
             }
 
@@ -202,12 +201,10 @@ public class JDKDetailsController {
                 return false;
             }
         } catch (IOException | InterruptedException e) {
-            // Show error or handle exception
+            //showErrorPopup("Something went wrong.");
             e.printStackTrace();
             return false;
         }
     }
 
 }
-
-

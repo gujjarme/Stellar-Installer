@@ -72,16 +72,5 @@ public class StellarController {
         }
     }
 
-//    @FXML
-//    private void openStellarDownloadScreen() {
-//        try {
-//            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/vaf/stellar/views/stellar-download-info.fxml"));
-//            Scene scene = new Scene(fxmlLoader.load());
-//            Stage stage = (Stage) continueButton.getScene().getWindow();
-//            stage.setScene(scene);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
 
 }

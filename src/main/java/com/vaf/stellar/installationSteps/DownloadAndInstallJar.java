@@ -268,13 +268,5 @@ public class DownloadAndInstallJar {
         }
         return destFile;
     }
-    private static void showErrorPopup(String errorMessage) {
-        Platform.runLater(() -> {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("An Error Occurred");
-            alert.setContentText(errorMessage);
-            alert.showAndWait();
-        });
-    }
+
 }
