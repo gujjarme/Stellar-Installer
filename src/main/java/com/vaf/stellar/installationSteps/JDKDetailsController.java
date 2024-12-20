@@ -53,7 +53,6 @@ public class JDKDetailsController {
     }
 
     private void openWebViewWindow() {
-        this.isPlaying = Boolean.TRUE;
         String videoUrl = OSUtils.getJdkURL();
         webView.setVisible(true);
         infoImageView.setVisible(false);
