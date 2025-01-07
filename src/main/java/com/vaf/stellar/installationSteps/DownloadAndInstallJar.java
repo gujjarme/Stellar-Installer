@@ -4,10 +4,12 @@ package com.vaf.stellar.installationSteps;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.control.Alert;
+
 import java.io.*;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.UnknownHostException;
 import java.nio.file.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -22,12 +24,11 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 
-
 public class DownloadAndInstallJar {
     private static final ExecutorService executor = Executors.newSingleThreadExecutor();
     private static final OkHttpClient client = new OkHttpClient().newBuilder()
-            .connectTimeout(10,TimeUnit.SECONDS)
-            .readTimeout(10, TimeUnit.SECONDS)
+            .connectTimeout(5, TimeUnit.SECONDS)
+            .readTimeout(5, TimeUnit.SECONDS)
             .build();
 
 
@@ -52,7 +53,7 @@ public class DownloadAndInstallJar {
                     downloadFile(jarUrl, jarFilePath, 0.2, 0.4, controller);
 
 
-                    if(!runMavenInstall(jarFilePath, 0.4, 0.6, controller,saveDir+File.separator+"apache-maven-3.9.9/bin/mvn")){
+                    if (!runMavenInstall(jarFilePath, 0.4, 0.6, controller, saveDir + File.separator + "apache-maven-3.9.9/bin/mvn")) {
                         ErrorUtils.showInfoPopup("Something went wrong while Installing the Jar.");
                     }
 
@@ -79,75 +80,123 @@ public class DownloadAndInstallJar {
 
         executor.execute(task);
     }
-    public static void downloadFile(String fileURL, String saveFilePath, double startProgress, double endProgress, ProgressDisplayController controller) {
-        Request request = new Request.Builder()
-                .url(fileURL)
-                .build();
 
-        try (Response response = client.newCall(request).execute()) {
-            if (!response.isSuccessful()) {
-                throw new RuntimeException("Failed to download file: HTTP " + response.code());
+    public static void downloadFileResumable(String fileURL, String saveFilePath, double startProgress, double endProgress, ProgressDisplayController controller) {
+        try {
+            File file = new File(saveFilePath);
+
+            // Determine the current file size (bytes already downloaded)
+            long downloadedBytes = file.exists() ? file.length() : 0;
+
+            // Create a request with the Range header to resume the download
+            Request request = new Request.Builder()
+                    .url(fileURL)
+                    .addHeader("Range", "bytes=" + downloadedBytes + "-")
+                    .build();
+
+            try (Response response = client.newCall(request).execute()) {
+                if (!response.isSuccessful() && response.code() != 206) { // 206 = Partial Content
+                    throw new RuntimeException("Failed to resume download: HTTP " + response.code());
+                }
+
+                InputStream inputStream = response.body().byteStream();
+                RandomAccessFile outputFile = new RandomAccessFile(saveFilePath, "rw");
+                outputFile.seek(downloadedBytes); // Move pointer to where the download left off
+
+                byte[] buffer = new byte[4096];
+                int totalRead = (int) downloadedBytes;
+                int bytesRead;
+                long fileSize = downloadedBytes + response.body().contentLength(); // Total file size including already downloaded part
+
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    outputFile.write(buffer, 0, bytesRead);
+                    totalRead += bytesRead;
+                    double progress = startProgress + (double) totalRead / fileSize * (endProgress - startProgress);
+
+                    // Update progress on UI thread
+                    Platform.runLater(() -> controller.updateProgress(progress));
+                }
+
+                outputFile.close();
+                inputStream.close();
+            } catch (SocketTimeoutException e) {
+                // Handle network timeout
+                ErrorUtils.showInfoPopup("Network Error");
+                controller.enableResumeButton(fileURL, saveFilePath, startProgress, endProgress, controller);
+                //throw new RuntimeException("Download interrupted due to network issues.");
             }
-
-            InputStream inputStream = response.body().byteStream();
-            FileOutputStream outputStream = new FileOutputStream(saveFilePath);
-
-            byte[] buffer = new byte[4096];
-            int totalRead = 0;
-            int bytesRead;
-            int fileSize = (int) response.body().contentLength();
-
-            while ((bytesRead = inputStream.read(buffer)) != -1) {
-                outputStream.write(buffer, 0, bytesRead);
-                totalRead += bytesRead;
-                double progress = startProgress + (double) totalRead / fileSize * (endProgress - startProgress);
-
-                Platform.runLater(() -> controller.updateProgress(progress));
-
-            }
-
-            outputStream.close();
-            inputStream.close();
-        }catch (SocketTimeoutException socketTimeoutException){
-            ErrorUtils.showInfoPopup("Network Error");
-            controller.enableResumeButton();
-            throw new RuntimeException();
-
-        }
-        catch (Exception e) {
-//            Platform.runLater(() -> {
-//
-//
-//            });
-            ErrorUtils.showInfoPopup("Something went wrong.");
-            e.printStackTrace();
+        } catch (Exception e) {
+            ErrorUtils.showInfoPopup("Failed to initiate download.");
+            throw new RuntimeException("Download interrupted due to network issues.");
+            //e.printStackTrace();
         }
     }
+
     public static boolean changeMavenPermissions(String mavenPath) {
-        // Command to change the permissions
-        String[] command = { "chmod", "+x", mavenPath };
+        String[] command = {"chmod", "+x", mavenPath};
 
         ProcessBuilder processBuilder = new ProcessBuilder(command);
 
         try {
-            // Start the process
             Process process = processBuilder.start();
-
-            // Wait for the process to complete
             int exitCode = process.waitFor();
-
-            // Check the exit code
             if (exitCode == 0) {
-                System.out.println("Permissions changed successfully for: " + mavenPath);
-                return true; // Success
+                return true;
             } else {
-                System.err.println("Failed to change permissions. Exit code: " + exitCode);
-                // Log the error output=
-                return false; // Failure
+                return false;
             }
         } catch (IOException | InterruptedException e) {
-            System.err.println("An error occurred while changing permissions: " + e.getMessage());
-            return false; // Exception occurred
+            return false;
+        }
+    }
+
+    public static void downloadFile(String fileURL, String saveFilePath, double startProgress, double endProgress, ProgressDisplayController controller) {
+        try {
+            File file = new File(saveFilePath);
+
+            long downloadedBytes = file.exists() ? file.length() : 0;
+
+            Request request = new Request.Builder()
+                    .url(fileURL)
+                    .addHeader("Range", "bytes=" + downloadedBytes + "-")
+                    .build();
+
+            Response response = client.newCall(request).execute();
+
+            if (!response.isSuccessful() && response.code() == 416) {
+//                    ErrorUtils.showInfoPopup("Failed to resume download.");
+//                    throw new RuntimeException("Failed to resume download: HTTP " + response.code());
+            }
+
+            InputStream inputStream = response.body().byteStream();
+            RandomAccessFile outputFile = new RandomAccessFile(saveFilePath, "rw");
+            outputFile.seek(downloadedBytes);
+
+            byte[] buffer = new byte[4096];
+            int totalRead = (int) downloadedBytes;
+            int bytesRead;
+            long fileSize = downloadedBytes + response.body().contentLength(); // Total file size including already downloaded part
+
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputFile.write(buffer, 0, bytesRead);
+                totalRead += bytesRead;
+                double progress = startProgress + (double) totalRead / fileSize * (endProgress - startProgress);
+
+                Platform.runLater(() -> controller.updateProgress(progress));
+            }
+
+            outputFile.close();
+            inputStream.close();
+
+        } catch (SocketTimeoutException e) {
+            ErrorUtils.showInfoPopup("Unstable internet connection. Please try to download again");
+            controller.enableResumeButton(fileURL, saveFilePath, startProgress, endProgress, controller);
+        }catch (UnknownHostException e) {
+            ErrorUtils.showInfoPopup("Unstable internet connection. Please try to download again");
+            controller.enableResumeButton(fileURL, saveFilePath, startProgress, endProgress, controller);
+        } catch (Exception e) {
+            ErrorUtils.showInfoPopup("Download Failed.");
+            e.printStackTrace();
         }
     }
 //    private static void downloadFile(String fileURL, String saveFilePath, double startProgress, double endProgress, ProgressDisplayController controller) throws InterruptedException {
@@ -180,7 +229,7 @@ public class DownloadAndInstallJar {
 //        }
 //    }
 
-    private static boolean runMavenInstall(String jarPath, double startProgress, double endProgress, ProgressDisplayController controller,String mavenPath) throws IOException, InterruptedException {
+    private static boolean runMavenInstall(String jarPath, double startProgress, double endProgress, ProgressDisplayController controller, String mavenPath) throws IOException, InterruptedException {
         if (System.getProperty("os.name").toLowerCase().contains("mac")) {
             // Create the ProcessBuilder directly with Maven command split into arguments
             ProcessBuilder processBuilder = new ProcessBuilder(mavenPath, "install:install-file",
@@ -205,9 +254,7 @@ public class DownloadAndInstallJar {
             process.waitFor();  // Wait for the process to complete
 
             return process.exitValue() == 0;  // Return true if Maven install was successful
-        }
-
-        else{
+        } else {
             String os = System.getProperty("os.name").toLowerCase();
             String mavenKeyword = os.contains("win") ? "mvn.cmd" : "mvn";
 
@@ -236,72 +283,158 @@ public class DownloadAndInstallJar {
         }
     }
 
+    private static int countZipEntries(String zipFilePath) throws IOException {
+        int totalEntries = 0;
+        try (ZipInputStream zis = new ZipInputStream(new FileInputStream(zipFilePath))) {
+            while (zis.getNextEntry() != null) {
+                totalEntries++;
+            }
+        }
+        return totalEntries;
+    }
 
+    //
+//    private static File newFile(File destinationDir, ZipEntry zipEntry) throws IOException {
+//        File destFile = new File(destinationDir, zipEntry.getName());
+//        String destDirPath = destinationDir.getCanonicalPath();
+//        String destFilePath = destFile.getCanonicalPath();
+//
+//        if (!destFilePath.startsWith(destDirPath + File.separator)) {
+//            throw new IOException("Entry is outside of the target directory: " + zipEntry.getName());
+//        }
+//
+//        return destFile;
+//    }
+//    private static void extractAndRenameZip(String zipFilePath, String extractDir, String newDirName, double startProgress, double endProgress, ProgressDisplayController controller) {
+//        try {
+//            File destDir = new File(extractDir);
+//            byte[] buffer = new byte[1024];
+//            ZipInputStream zis = new ZipInputStream(new FileInputStream(zipFilePath));
+//            ZipEntry zipEntry = zis.getNextEntry();
+//            File extractedDir = null;
+//
+//            File existingProjectDir = new File(destDir, newDirName);
+//            if (existingProjectDir.exists()) {
+//                deleteDirectory(existingProjectDir);
+//            }
+//
+//            int totalEntries = 0;
+//            while (zipEntry != null) {
+//                totalEntries++;
+//                zipEntry = zis.getNextEntry();
+//            }
+//            zis.close();
+//
+//            zis = new ZipInputStream(new FileInputStream(zipFilePath));
+//            zipEntry = zis.getNextEntry();
+//            int processedEntries = 0;
+//
+//            while (zipEntry != null) {
+//                File newFile = newFile(destDir, zipEntry);
+//                if (zipEntry.isDirectory()) {
+//                    if (extractedDir == null) {
+//                        extractedDir = newFile;
+//                    }
+//                    if (!newFile.exists()) {
+//                        newFile.mkdirs();
+//                    }
+//                } else {
+//                    new File(newFile.getParent()).mkdirs();
+//                    FileOutputStream fos = new FileOutputStream(newFile);
+//                    int len;
+//                    while ((len = zis.read(buffer)) > 0) {
+//                        fos.write(buffer, 0, len);
+//                    }
+//                    fos.close();
+//                }
+//
+//                processedEntries++;
+//                double progress = startProgress + (processedEntries / (double) totalEntries) * (endProgress - startProgress);
+//                Platform.runLater(() -> controller.updateProgress(progress));
+//                Thread.sleep(20); // Adjust the delay for smooth effect
+//
+//                zipEntry = zis.getNextEntry();
+//            }
+//            zis.closeEntry();
+//            zis.close();
+//
+//            if (extractedDir != null) {
+//                File renamedDir = new File(destDir, newDirName);
+//                extractedDir.renameTo(renamedDir);
+//            }
+//
+//            File zipFile = new File(zipFilePath);
+//            zipFile.delete();
+//        } catch (Exception e) {
+//            ErrorUtils.showInfoPopup("Something went wrong while Extracting.");
+//            e.printStackTrace();
+//        }
+//    }
     private static void extractAndRenameZip(String zipFilePath, String extractDir, String newDirName, double startProgress, double endProgress, ProgressDisplayController controller) {
         try {
             File destDir = new File(extractDir);
-            byte[] buffer = new byte[1024];
-            ZipInputStream zis = new ZipInputStream(new FileInputStream(zipFilePath));
-            ZipEntry zipEntry = zis.getNextEntry();
-            File extractedDir = null;
-
+            if (!destDir.exists()) {
+                destDir.mkdirs();
+            }
             File existingProjectDir = new File(destDir, newDirName);
             if (existingProjectDir.exists()) {
                 deleteDirectory(existingProjectDir);
             }
 
-            int totalEntries = 0;
-            while (zipEntry != null) {
-                totalEntries++;
-                zipEntry = zis.getNextEntry();
+            // Count total entries for progress calculation
+            int totalEntries = countZipEntries(zipFilePath);
+            if (totalEntries == 0) {
+                throw new IllegalArgumentException("Zip file is empty or invalid.");
             }
-            zis.close();
 
-            zis = new ZipInputStream(new FileInputStream(zipFilePath));
-            zipEntry = zis.getNextEntry();
+            File extractedDir = null;
             int processedEntries = 0;
 
-            while (zipEntry != null) {
-                File newFile = newFile(destDir, zipEntry);
-                if (zipEntry.isDirectory()) {
-                    if (extractedDir == null) {
-                        extractedDir = newFile;
+            try (ZipInputStream zis = new ZipInputStream(new FileInputStream(zipFilePath))) {
+                byte[] buffer = new byte[1024];
+                ZipEntry zipEntry;
+
+                while ((zipEntry = zis.getNextEntry()) != null) {
+                    File newFile = newFile(destDir, zipEntry);
+
+                    if (zipEntry.isDirectory()) {
+                        if (extractedDir == null) {
+                            extractedDir = newFile;
+                        }
+                        if (!newFile.exists() && !newFile.mkdirs()) {
+                            throw new IOException("Failed to create directory: " + newFile);
+                        }
+                    } else {
+                        File parentDir = newFile.getParentFile();
+                        if (!parentDir.exists() && !parentDir.mkdirs()) {
+                            throw new IOException("Failed to create directory: " + parentDir);
+                        }
+                        try (FileOutputStream fos = new FileOutputStream(newFile)) {
+                            int len;
+                            while ((len = zis.read(buffer)) > 0) {
+                                fos.write(buffer, 0, len);
+                            }
+                        }
                     }
-                    if (!newFile.exists()) {
-                        newFile.mkdirs();
-                    }
-                } else {
-                    new File(newFile.getParent()).mkdirs();
-                    FileOutputStream fos = new FileOutputStream(newFile);
-                    int len;
-                    while ((len = zis.read(buffer)) > 0) {
-                        fos.write(buffer, 0, len);
-                    }
-                    fos.close();
+
+                    processedEntries++;
+                    double progress = startProgress + (processedEntries / (double) totalEntries) * (endProgress - startProgress);
+                    Platform.runLater(() -> controller.updateProgress(progress));
                 }
-
-                processedEntries++;
-                double progress = startProgress + (processedEntries / (double) totalEntries) * (endProgress - startProgress);
-                Platform.runLater(() -> controller.updateProgress(progress));
-                Thread.sleep(20); // Adjust the delay for smooth effect
-
-                zipEntry = zis.getNextEntry();
             }
-            zis.closeEntry();
-            zis.close();
-
             if (extractedDir != null) {
                 File renamedDir = new File(destDir, newDirName);
-                extractedDir.renameTo(renamedDir);
+                if (!Files.move(extractedDir.toPath(), renamedDir.toPath(), StandardCopyOption.REPLACE_EXISTING).toFile().exists()) {
+                    throw new IOException("Failed to rename directory to: " + renamedDir);
+                }
             }
-
-            File zipFile = new File(zipFilePath);
-            zipFile.delete();
+            Files.deleteIfExists(Path.of(zipFilePath));
         } catch (Exception e) {
-            ErrorUtils.showInfoPopup("Something went wrong while Extracting.");
+            ErrorUtils.showInfoPopup("Something went wrong while extracting the zip file: " + e.getMessage());
             e.printStackTrace();
         }
     }
+
 
     private static void deleteDirectory(File directory) {
         File[] files = directory.listFiles();
@@ -316,6 +449,7 @@ public class DownloadAndInstallJar {
         }
         directory.delete();
     }
+
     private static File newFile(File destinationDir, ZipEntry zipEntry) throws IOException {
         File destFile = new File(destinationDir, zipEntry.getName());
         String destDirPath = destinationDir.getCanonicalPath();

@@ -12,7 +12,6 @@ import java.io.IOException;
 
 public class StellarDownloadInfoController {
 
-
     @FXML
     private Button continueButton;
     @FXML

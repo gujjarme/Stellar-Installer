@@ -14,25 +14,24 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+import static com.vaf.stellar.installationSteps.DownloadAndInstallJar.downloadFile;
+
 public class ProgressDisplayController {
     @FXML
     private ProgressBar downloadProgressBar;
     @FXML
     private Label percentageLabel;
-    @FXML
-    private Label statusLabel;
+
     @FXML
     private Button continueButton;
     @FXML
     private Button resumeButton;
-    @FXML
-    private VBox statusLabelGroup;
+
 
     @FXML
     private ImageView arrowImageView;// Add a reference to the status label
     @FXML
     public void initialize() {
-
         arrowImageView.setOnMouseClicked(event -> goToPreviousScreen());
     }
     public void beginDownload(String saveDir) {
@@ -52,21 +51,26 @@ public class ProgressDisplayController {
         });
     }
 
-    public void enableResumeButton(){
+    public void enableResumeButton(String fileURL, String saveFilePath, double startProgress, double endProgress, ProgressDisplayController controller){
         try{
             resumeButton.setVisible(Boolean.TRUE);
+            resumeButton.setDisable(Boolean.FALSE);
+            while(!resumeButton.isDisabled()){
+                Thread.sleep(1);
+            }
+            downloadFile( fileURL,  saveFilePath,  startProgress,  endProgress,  controller);
         }catch (Exception e){
+
             e.printStackTrace();
         }
     }
     private void goToPreviousScreen() {
-        try {
-            // Load the get-started.fxml file
+        try{
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/vaf/stellar/views/stellar.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
             Stage stage = (Stage) arrowImageView.getScene().getWindow();
             stage.setScene(scene);
-        } catch (IOException e) {
+        }catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -89,5 +93,12 @@ public class ProgressDisplayController {
             alert.setContentText(errorMessage);
             alert.showAndWait();
         });
+    }
+
+    @FXML
+    public void onClickResume(){
+        if(this.resumeButton.isVisible()){
+            this.resumeButton.setDisable(Boolean.TRUE);
+        }
     }
 }

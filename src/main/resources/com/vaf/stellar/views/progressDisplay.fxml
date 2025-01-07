@@ -46,7 +46,7 @@
                            style="-fx-font-size: 12px; -fx-text-fill: white; -fx-alignment: center;" wrapText="true" maxWidth="280" alignment="CENTER" />
                 </VBox>
                 <Button fx:id="continueButton" layoutX="149.0" layoutY="99.0" onAction="#FinishScreen" disable="true" prefHeight="20.0" prefWidth="80.0" style="-fx-background-color: #00FFF0; -fx-text-fill: black;" text="Continue" />
-                <Button fx:id="resumeButton" layoutX="159.0" layoutY="100.0" onAction="#FinishScreen" visible="false" prefHeight="20.0" prefWidth="80.0" style="-fx-background-color: #00FFF0; -fx-text-fill: black;" text="Resume" />
+                <Button fx:id="resumeButton" layoutX="159.0" layoutY="100.0" onAction="#onClickResume" visible="false" prefHeight="20.0" prefWidth="80.0" style="-fx-background-color: #00FFF0; -fx-text-fill: black;" text="Resume" />
 
             </VBox>
         </AnchorPane>
